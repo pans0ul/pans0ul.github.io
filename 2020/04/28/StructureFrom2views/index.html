@@ -8,7 +8,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>National Undergraduate Electronic Design Contest | pans0ul blog</title>
+  <title>Structure From two views | pans0ul blog</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -146,40 +146,52 @@
         <div class="row col-md-offset-2">
             <div class="col-md-8">
     			<span class="post-meta">
-      <time datetime="2020-04-21T19:34:30.000Z" itemprop="datePublished">
-          2020-04-21
+      <time datetime="2020-04-28T15:50:14.000Z" itemprop="datePublished">
+          2020-04-28
       </time>
     
     
     | 
-    <a href='/tags/Engineering/'>Engineering</a>
+    <a href='/tags/CV/'>CV</a>,
+    
+    <a href='/tags/SFM/'>SFM</a>
     
     
 </span>
-                <h1>National Undergraduate Electronic Design Contest</h1>
+                <h1>Structure From two views</h1>
             </div>
         </div>
         <div class="col-md-8 col-md-offset-2">
-      		<p><strong>National Undergraduate Electronic Design Contest consists of two parts .One is analog electronic design ,another is theme design .</strong></p>
-<p><strong>Here shows some shots about analog electronic design .</strong></p>
-<p><img src="analog-1.jpg" alt=""><br><img src="analog-2.jpg" alt=""></p>
-<h1 id=""><a href="#" class="headerlink" title=""></a></h1><p><img src="wave%20(4).jpg" alt=""><br><img src="wave%20(5).jpg" alt=""><br><img src="wave%20(6).jpg" alt=""></p>
-<p><img src="wave%20(8).jpg" alt=""></p>
-<p><img src="wave%20(1).jpg" alt=""><br><img src="wave%20(2).jpg" alt=""><br><img src="wave%20(3).jpg" alt=""><br><img src="wave%20(7).jpg" alt=""></p>
-<h1 id="-1"><a href="#-1" class="headerlink" title=""></a></h1><p><img src="xian-1.jpg" alt=""><br><img src="xian-2.jpg" alt=""><br><img src="xian-3.jpg" alt=""></p>
+      		<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><p><strong>0.this project modified by Chapter4_StructureFromMotion</strong></p>
+<p><strong>1.non gpu version is better for beginner of learning CV . i.e. compile the project would be easy .</strong></p>
+<p><strong>2.structure from two views</strong></p>
+<h2 id="Fix-bug-in-the-project"><a href="#Fix-bug-in-the-project" class="headerlink" title="Fix bug in the project"></a>Fix bug in the project</h2><h3 id="original-in-Distance-h"><a href="#original-in-Distance-h" class="headerlink" title="original in Distance.h"></a>original in Distance.h</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">void OnlyMatchFeatures(int strategy &#x3D; STRATEGY_USE_OPTICAL_FLOW + STRATEGY_USE_DENSE_OF + STRATEGY_USE_FEATURE_MATCH) &#123;</span><br><span class="line">	imgpts1.clear(); imgpts2.clear(); fullpts1.clear(); fullpts2.clear();</span><br><span class="line">	</span><br><span class="line">	std::vector&lt;cv::Mat&gt; imgs; imgs.push_back(left_im); imgs.push_back(right_im);</span><br><span class="line">	std::vector&lt;std::vector&lt;cv::KeyPoint&gt; &gt; imgpts; imgpts.push_back(imgpts1); imgpts.push_back(imgpts2);</span><br><span class="line">	</span><br><span class="line">	RichFeatureMatcher rfm(imgs,imgpts);</span><br><span class="line">	rfm.MatchFeatures(0, 1);</span><br><span class="line">	</span><br><span class="line">	imgpts1 &#x3D; rfm.GetImagePoints(0);</span><br><span class="line">	imgpts2 &#x3D; rfm.GetImagePoints(1);</span><br><span class="line">	</span><br><span class="line">	features_matched &#x3D; true;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void RecoverDepthFromImages() &#123;			</span><br><span class="line">	</span><br><span class="line">	if(!features_matched) </span><br><span class="line">		OnlyMatchFeatures();</span><br><span class="line">	</span><br><span class="line">	std::vector&lt;cv::DMatch&gt; matches;</span><br><span class="line">	FindCameraMatrices(K, Kinv, distortion_coeff, imgpts1, imgpts2, imgpts1_good, imgpts2_good, P, P1, matches, pointcloud</span><br></pre></td></tr></table></figure>
+
+<h3 id="modified-in-Distance-h"><a href="#modified-in-Distance-h" class="headerlink" title="modified in Distance.h"></a>modified in Distance.h</h3><ol>
+<li>the variable matches is set as global in class Distance </li>
+<li>rfm.MatchFeatures(0, 1,&amp;matches);</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">void OnlyMatchFeatures(int strategy &#x3D; STRATEGY_USE_OPTICAL_FLOW + STRATEGY_USE_DENSE_OF + STRATEGY_USE_FEATURE_MATCH) &#123;&#x2F;&#x2F;Q</span><br><span class="line">	imgpts1.clear(); imgpts2.clear(); fullpts1.clear(); fullpts2.clear();</span><br><span class="line">	</span><br><span class="line">	std::vector&lt;cv::Mat&gt; imgs; imgs.push_back(left_im); imgs.push_back(right_im);</span><br><span class="line">	std::vector&lt;std::vector&lt;cv::KeyPoint&gt; &gt; imgpts; imgpts.push_back(imgpts1); imgpts.push_back(imgpts2);</span><br><span class="line">	</span><br><span class="line">	RichFeatureMatcher rfm(imgs,imgpts); &#x2F;&#x2F;detect feature &amp; compute descriptors as globle of class RichFeatureMatcher</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	&#x2F;&#x2F;pans0ul fix</span><br><span class="line">	rfm.MatchFeatures(0, 1,&amp;matches);</span><br><span class="line">	</span><br><span class="line">	imgpts1 &#x3D; rfm.GetImagePoints(0); &#x2F;&#x2F;imgpts1 is globle of Distance</span><br><span class="line">	imgpts2 &#x3D; rfm.GetImagePoints(1);</span><br><span class="line">	</span><br><span class="line">	features_matched &#x3D; true;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Reasons"><a href="#Reasons" class="headerlink" title="Reasons"></a>Reasons</h3><ol>
+<li>function MatchFeatures() will update variable matches </li>
+<li>the correct algorithm order is function FindCameraMatrices() after get matches </li>
+<li>if the variable matches is empty ,there is no necessary to compute camera matrix  </li>
+</ol>
+<h2 id="Parse-SFM-project"><a href="#Parse-SFM-project" class="headerlink" title="Parse SFM project"></a>Parse SFM project</h2><h3 id="Files-Function"><a href="#Files-Function" class="headerlink" title="Files Function"></a>Files Function</h3><p><img src="filesfunction.jpg" alt=""></p>
+<h3 id="UML"><a href="#UML" class="headerlink" title="UML"></a>UML</h3><p><img src="UML.jpg" alt=""></p>
+<h3 id="process-diagram"><a href="#process-diagram" class="headerlink" title="process diagram"></a>process diagram</h3><p><img src="process.jpg" alt=""></p>
+<h2 id="Project-repository"><a href="#Project-repository" class="headerlink" title="Project repository"></a>Project repository</h2><p><a href="https://github.com/MasteringOpenCV/code/tree/master/Chapter4_StructureFromMotion" target="_blank" rel="noopener">original:Chapter4_StructureFromMotion</a></p>
+<p><a href="https://github.com/pans0ul/StructureFrom2views_of_Chapter4_StructureFromMotion" target="_blank" rel="noopener">this project</a></p>
 
             <div class="clearfix"></div>
             <hr class="nogutter">
         </div>
         <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
     
-    <a class="pull-left" href="/2020/04/28/StructureFrom2views/" style="float: left;">
-        ← Structure From two views
-    </a>
     
-    
-    <a class="pull-right" href="/2020/04/03/Reading-SFM%20in%20book%20-Mastering%20OpenCV/">
-        Reading SFM in book:Mastering OpenCV →
+    <a class="pull-right" href="/2020/04/22/nationalUndergraduateElectronicDesignContest/">
+        National Undergraduate Electronic Design Contest →
     </a>
     
 </nav>
