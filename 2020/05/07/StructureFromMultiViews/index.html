@@ -8,7 +8,7 @@
 <!--<![endif]-->
 
 <head>
-  <title>Archives: 2020/4 | pans0ul blog</title>
+  <title>Structure From Multi-Views | pans0ul blog</title>
   <!-- Meta data -->
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
@@ -50,7 +50,7 @@
 </head>
 
 <!--
-<body class="home-template">
+<body class="post-template">
 -->
 <body id="index" class="lightnav animsition">
 
@@ -140,87 +140,119 @@
         <!-- ============================ Header & Logo bar =========================== -->
 
 
-      <!-- ============================ Hero Image =========================== -->
-
-<section id="hero" class="scrollme">
-    <div class="container-fluid element-img" style="background: url(/img/bg_img.jpg) no-repeat center center fixed;background-size: cover">
-        <div class="row">
-            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 vertical-align cover boost text-center">
-                <div class="center-me animateme" data-when="exit" data-from="0" data-to="0.6" data-opacity="0" data-translatey="100">
-                    <div>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-                        <h2></h2>
-                        <p></p>
-                        
-
-                    </div>
-                </div>
-            </div>
-            <!-- // .col-md-12 -->
-        </div>
-        <div class="herofade beige-dk"></div>
-    </div>
-</section>
-
-<!-- Height spacing helper -->
-<div class="heightblock"></div>
-<!-- // End height spacing helper -->
-
-<!-- ============================ END Hero Image =========================== -->
-
-
-
-
-<section id="services">
+      
+<section id="intro">
     <div class="container">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1">
-                <div class="row boxes">
-                    
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2020/04/28/StructureFrom2views/">Structure From two views</a></h4>
-                            
-                            <p><time datetime="2020-04-28T15:50:14.000Z"><a href="/2020/04/28/StructureFrom2views/">2020-04-28</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2020/04/22/nationalUndergraduateElectronicDesignContest/">National Undergraduate Electronic Design Contest</a></h4>
-                            
-                            <p><time datetime="2020-04-21T19:34:30.000Z"><a href="/2020/04/22/nationalUndergraduateElectronicDesignContest/">2020-04-21</a></time></p>
-                        </div>
-                    
-                        
-                        
-                        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-                            
-                              <h4 class="title"><a href="/2020/04/03/Reading-SFM in book -Mastering OpenCV/">Reading SFM in book:Mastering OpenCV</a></h4>
-                            
-                            <p><time datetime="2020-04-03T14:21:58.000Z"><a href="/2020/04/03/Reading-SFM in book -Mastering OpenCV/">2020-04-03</a></time></p>
-                        </div>
-                    
-                </div>
-            </div>    
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+      <time datetime="2020-05-06T18:51:00.000Z" itemprop="datePublished">
+          2020-05-06
+      </time>
+    
+    
+    | 
+    <a href='/tags/CV/'>CV</a>,
+    
+    <a href='/tags/SFM/'>SFM</a>
+    
+    
+</span>
+                <h1>Structure From Multi-Views</h1>
+            </div>
         </div>
-    </div>
-</section> 
+        <div class="col-md-8 col-md-offset-2">
+      		<h2 id="DEMO-at-first"><a href="#DEMO-at-first" class="headerlink" title="DEMO at first"></a>DEMO at first</h2><p><img src="demo.gif" alt="DEMO"></p>
+<h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ol start="0">
+<li><p>this project is modified from Chapter4_StructureFromMotion</p>
+</li>
+<li><p>non gpu version is better for beginner of learning CV . i.e. compile the project would be easy .</p>
+</li>
+<li><p>structure from multiple views</p>
+</li>
+<li><p>use AKAZE FeatureDetector and DescriptorExtractor instead of ORB </p>
+</li>
+<li><p>non opencv3_contrib verison </p>
+</li>
+</ol>
+<h2 id="AKAZE-VS-ORB"><a href="#AKAZE-VS-ORB" class="headerlink" title="AKAZE VS ORB"></a>AKAZE VS ORB</h2><pre><code>We have concluded that, although ORB is faster to compute, AKAZE shows a better compromise between speed and performance than ORB for images with low resolution. Keywords: ORB, AKAZE, UAV, visual odometry, feature matching.</code></pre><p><a href="http://www.epacis.net/ccis2016/papers/paper_121.pdf" target="_blank" rel="noopener">For more details – &gt; paper </a></p>
+<h2 id="Matcher-FLANN-BASED-MATCHER-VS-BFMATCHER"><a href="#Matcher-FLANN-BASED-MATCHER-VS-BFMATCHER" class="headerlink" title="Matcher : FLANN-BASED MATCHER VS BFMATCHER"></a>Matcher : FLANN-BASED MATCHER VS BFMATCHER</h2><pre><code>BFMatcher is going to try all the possibilities (which is the meaning of &quot;Brute Force&quot; and hence it will find the best matches.
 
-<section id="statement">
-    <div class="container text-center wow fadeInUp" data-wow-delay="0.5s">
-        <div class="row">
-            <p>WHEN THE DUST SETTLES , YOUR LEGACY REMAINS .</p>
+FLANN, meaning &quot;Fast Library for Approximate Nearest Neighbors&quot;, will be much faster but will find an approximate nearest neighbors. It will find a good matching, but not necessarily the best possible one. You can play with FLANN&apos;s parameters in order to increase the precision (i.e. the &quot;quality&quot; of the matchings), but it will be at the cost of slowing the algorithm.
+
+In other words: FLANN is much faster than BFMatcher but it only finds an approximate nearest neighbor, which is a good matching but not necessarily the best. You can play with the parameters of FLANN in order to increase its speed or its precision.</code></pre><p><a href="https://stackoverflow.com/questions/10610966/difference-between-bfmatcher-and-flannbasedmatcher" target="_blank" rel="noopener">For more details – &gt; Q&amp;A </a></p>
+<h2 id="Parse-SFM-project"><a href="#Parse-SFM-project" class="headerlink" title="Parse SFM project"></a>Parse SFM project</h2><h3 id="Files-Function"><a href="#Files-Function" class="headerlink" title="Files Function"></a>Files Function</h3><p><img src="filesfunction.jpg" alt=""></p>
+<h3 id="UML"><a href="#UML" class="headerlink" title="UML"></a>UML</h3><p><img src="UML.jpg" alt=""></p>
+<h3 id="process-diagram"><a href="#process-diagram" class="headerlink" title="process diagram"></a>process diagram</h3><p><img src="process.jpg" alt=""></p>
+<h2 id="Project-repository"><a href="#Project-repository" class="headerlink" title="Project repository"></a>Project repository</h2><p><a href="https://github.com/MasteringOpenCV/code/tree/master/Chapter4_StructureFromMotion" target="_blank" rel="noopener">original–Chapter4_StructureFromMotion</a></p>
+<p><a href="https://github.com/pans0ul/StructureFromMultiViews" target="_blank" rel="noopener">this project</a></p>
+
+            <div class="clearfix"></div>
+            <hr class="nogutter">
         </div>
+        <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
+    
+    
+    <a class="pull-right" href="/2020/04/28/StructureFrom2views/">
+        Structure From two views →
+    </a>
+    
+</nav>
+
+        <div class="col-md-8 col-md-offset-2 col-sm-24"><script type="text/javascript">
+  /**
+   * 搜狐畅言
+   */
+
+  /*
+  document.write('<div id="SOHUCS" sid="' + window.location.pathname.slice(1) + '" ></div>');
+
+  window.onload = function () {
+    (function () {
+      var appid = 'cytXXXX';
+      var conf = 'prod_xxxxxxxxxxxxxxxxx';
+      var width = window.innerWidth || document.documentElement.clientWidth;
+      var loadJs = function (d, a, id) {
+        var c = document.getElementsByTagName("head")[0] || document.head || document.documentElement;
+        var b = document.createElement("script");
+        b.setAttribute("type", "text/javascript");
+        b.setAttribute("charset", "UTF-8");
+        b.setAttribute("src", d);
+        if (id) {
+          b.setAttribute("id", id);
+        }
+        if (typeof a === "function") {
+          if (window.attachEvent) {
+            b.onreadystatechange = function () {
+              var e = b.readyState;
+              if (e === "loaded" || e === "complete") {
+                b.onreadystatechange = null;
+                a()
+              }
+            }
+          } else {
+            b.onload = a
+          }
+        }
+        c.appendChild(b)
+      };
+
+      loadJs("https://changyan.sohu.com/upload/changyan.js", function () {
+        window.changyan.api.config({
+          appid: appid,
+          conf: conf
+        })
+      });
+    })();
+  }
+  */
+
+</script>
+</div>
     </div>
 </section>
+
+
       
 <!-- ============================ Footer =========================== -->
 
