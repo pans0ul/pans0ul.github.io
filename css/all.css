@@ -144,14 +144,18 @@ h6 span,
 	font-family: 'Georgia', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
 
 	font-style: italic;
+
 	margin-left: 4px;
 	margin-right: 3px;
 	text-transform: none;
 	position: relative;
 	top: -1px;
+
 }
 h1 span {
-	top: -2px
+	top: -2px;
+	color: #FFF;
+	font-size:150%;
 }
 section {
 	background-color: #fff;
