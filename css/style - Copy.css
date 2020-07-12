@@ -7,7 +7,7 @@
 }
 
 *{
-    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 }
 .pace {
 	-webkit-pointer-events: none;
@@ -55,21 +55,21 @@
 body {
 	background-color: #FFFFFF;
 	background-color: rgb(255,255,255);
-    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
-	color: #333;
+	font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+	color: #666;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
-	line-height: 26px;
+	line-height: 30px;
 	padding: 0px 0px;
 }
 p {
-    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
-	color: #333;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
+	color: #666;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
-	line-height: 26px;
+	line-height: 30px;
 }
 i {
 	color: #151515;
@@ -85,22 +85,18 @@ h4,
 h5,
 h6 {
 	margin-top: 0;
-    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	font-weight: normal;
 	color: #151515;
 }
-h1 {
-	font-weight: bolder;
-}
 h2 {
-	text-transform: none;
+	text-transform: uppercase;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 22px;
-	line-height: 37px;
-	letter-spacing: 0px;
-	font-weight: bolder;
+	line-height: 30px;
+	letter-spacing: 1px;
 }
 @media (max-width:768px) {
 	h2 {
@@ -116,7 +112,6 @@ h3 {
 	line-height: 37px;
 	font-size: 20px;
 	margin-top: 0;
-	font-weight: bolder;
 }
 h4 {
 	font-style: normal;
@@ -124,7 +119,6 @@ h4 {
 	font-size: 18px;
 	line-height: 30px;
 	color: #333333;
-	font-weight: bolder;
 }
 h1 span,
 h2 span,
@@ -133,7 +127,7 @@ h4 span,
 h6 span,
 h6 span,
 .navbar .nav > li > span {
-	font-family: 'Georgia', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+	font-family: 'Georgia', 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 
 	font-style: italic;
 
@@ -148,7 +142,6 @@ h1 span {
 	top: -2px;
 	color: #FFF;
 	font-size:150%;
-	
 }
 section {
 	background-color: #fff;
@@ -178,7 +171,7 @@ blockquote {
 	margin: 40px 0;
 }
 blockquote p {
-	font-family: 'Georgia', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+	font-family: 'Georgia', 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 	font-style: italic;
 	font-size: 15px;
 }
@@ -335,7 +328,7 @@ a.custom-button span {
 	-moz-border-radius: 0;
 	border-radius: 0;
 	font-size: 14px;
-    font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+    font-family: 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 	font-weight: 700;
 	padding: 8px 18px;
 	font-weight: 600;
@@ -521,7 +514,7 @@ a.custom-button span {
 	padding:0px 10px;
 	margin:23px 0px;
 	color: #151515;
-	font-family: 'Montserrat', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+	font-family: 'Montserrat', 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	font-size: 11px;
@@ -531,7 +524,7 @@ a.custom-button span {
 	border-right:1px solid #aaa;
 }
 .navbar .nav li.nolink {
-	font-family: 'Montserrat', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+	font-family: 'Montserrat', 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 	color: #151515;
 	font-weight: 400;
 	text-shadow: none;
@@ -631,7 +624,7 @@ nav i.icon-basic-eye {
 	top: 14px;
 	z-index: 1060;
 	color: #151515;
-	font-family: 'Montserrat', "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+	font-family: 'Montserrat', 'Myriad Pro', Calibri, Helvetica, Arial, sans-serif;
 	text-transform: uppercase;
 	letter-spacing: 1px;
 	font-size: 11px;
@@ -1127,6 +1120,11 @@ span.sb-caret { /* Caret Down */
 #blog-post #page-header {
 	margin-top: 61px;
 }
+img[src*='#center'] { 
+    display: block;
+    margin: auto;
+}
+
 #blog-post .avatar img {
 	position: absolute;
 	bottom: 50px;

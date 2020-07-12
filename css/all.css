@@ -70,20 +70,20 @@ body {
 	background-color: #FFFFFF;
 	background-color: rgb(255,255,255);
     font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
-	color: #666;
+	color: #333;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
-	line-height: 30px;
+	line-height: 26px;
 	padding: 0px 0px;
 }
 p {
     font-family: "Open Sans", "Helvetica Neue", "Helvetica", "Hiragino Sans GB", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
-	color: #666;
+	color: #333;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 14px;
-	line-height: 30px;
+	line-height: 26px;
 }
 i {
 	color: #151515;
@@ -104,13 +104,17 @@ h6 {
 	font-weight: normal;
 	color: #151515;
 }
+h1 {
+	font-weight: bolder;
+}
 h2 {
-	text-transform: uppercase;
+	text-transform: none;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 22px;
-	line-height: 30px;
-	letter-spacing: 1px;
+	line-height: 37px;
+	letter-spacing: 0px;
+	font-weight: bolder;
 }
 @media (max-width:768px) {
 	h2 {
@@ -126,6 +130,7 @@ h3 {
 	line-height: 37px;
 	font-size: 20px;
 	margin-top: 0;
+	font-weight: bolder;
 }
 h4 {
 	font-style: normal;
@@ -133,6 +138,7 @@ h4 {
 	font-size: 18px;
 	line-height: 30px;
 	color: #333333;
+	font-weight: bolder;
 }
 h1 span,
 h2 span,
@@ -156,6 +162,7 @@ h1 span {
 	top: -2px;
 	color: #FFF;
 	font-size:150%;
+	
 }
 section {
 	background-color: #fff;
