@@ -1,0 +1,780 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="pans0ul">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism什么是内存管理? 内存管理，是指软件运行时对计算机内存资源的分配和使用的技术。其最主要的目的是如何高效、快速的分配，并且在适当的时候释放和回收内存资源。 在此之下还有一个关键基础内容需要了解，也就是寻址 寻址, 是指计算机处理器通过某种特定的规则访问内存或存储器中的数据. 在操作系统中，”寻">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism">
+<meta property="og:url" content="https://pans0ul.github.io/2023/11/23/Linux-0-11-MMU-Addressing-Machanism/index.html">
+<meta property="og:site_name" content="pans0ul blog">
+<meta property="og:description" content="Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism什么是内存管理? 内存管理，是指软件运行时对计算机内存资源的分配和使用的技术。其最主要的目的是如何高效、快速的分配，并且在适当的时候释放和回收内存资源。 在此之下还有一个关键基础内容需要了解，也就是寻址 寻址, 是指计算机处理器通过某种特定的规则访问内存或存储器中的数据. 在操作系统中，”寻">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-23-21-24-05-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-26-11-56-07-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-14-16-01-08-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-24-13-26-46-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-12-19-08-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-14-16-24-19-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-05-30-11-09-43-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-05-30-11-09-56-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-23-22-04-45-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-15-41-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-16-17-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-20-38-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-51-08-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-52-44-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-56-14-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-59-32-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-59-52-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-18-01-29-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-16-19-38-11-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-16-19-37-44-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-16-19-47-42-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-17-22-05-03-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-20-21-10-23-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-21-22-19-06-info%20gdt.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-20-21-31-14-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-17-22-22-12-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-08-17-22-16-17-image.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/segment-ma.jpg">
+<meta property="article:published_time" content="2023-11-23T08:57:59.000Z">
+<meta property="article:modified_time" content="2023-11-23T09:32:36.841Z">
+<meta property="article:author" content="pans0ul">
+<meta property="article:tag" content="OS">
+<meta property="article:tag" content="MMU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pans0ul.github.io/img/Linux-0-11-MMU-Addressing-Machanism/2023-06-23-21-24-05-image.png">
+  
+  
+  
+  <title>Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism - pans0ul blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pans0ul.github.io","root":"/","version":"1.9.2","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>pans0ul&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://my.oschina.net/pansoul">
+                <i class="iconfont icon-pen"></i>
+                OSChina
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-23 16:57" pubdate>
+          November 23, 2023 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Linux-0-11-内存管理-寻址-Linux-0-11-MMU-Addressing-Machanism"><a href="#Linux-0-11-内存管理-寻址-Linux-0-11-MMU-Addressing-Machanism" class="headerlink" title="Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism"></a>Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism</h1><p>什么是内存管理? <strong>内存管理</strong>，是指<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%BD%AF%E4%BB%B6" title="软件">软件</a>运行时对计算机<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E5%86%85%E5%AD%98" title="内存">内存</a>资源的分配和使用的技术。其最主要的目的是如何高效、快速的分配，并且在适当的时候释放和回收内存资源。</p>
+<p>在此之下还有一个关键基础内容需要了解，也就是<strong>寻址</strong></p>
+<p><del>寻址, 是指计算机处理器通过某种特定的规则访问内存或存储器中的数据.</del></p>
+<p>在操作系统中，”寻址”通常指的是处理器或CPU（中央处理器）计算有效地址的过程。以便内存管理或其他程序从内存中读取或写入数据。</p>
+<p>在Linux0.11中, 内存做了分段和分页处理, 由此形成了两种不同的寻址方式.</p>
+<p>下面我会花大量篇幅先把这两种的寻址原理介绍清楚。</p>
+<p>下一期再介绍MMU(Memory Management Unit)。</p>
+<h2 id="寻址"><a href="#寻址" class="headerlink" title="寻址"></a>寻址</h2><p>当程序需要访问内存时，操作系统负责将虚拟地址转换为物理地址，这个过程称为地址寻址。通过地址寻址，操作系统能够确保不同程序或进程的内存空间相互隔离，并为每个程序提供独立的虚拟地址空间。这有助于提高系统的安全性和稳定性，同时允许程序使用比实际物理内存更大的虚拟内存空间。</p>
+<p>寻址相当于是程序的访问内存的遵循的规则，程序遵循这个规律，才能正确访问内存。</p>
+<p>用函数表示逻辑地址到物理地址的关系, 见下方</p>
+<p>                                            内存的物理地址&#x3D;f(逻辑地址)</p>
+<p>f(x)在这里是一个寻址规则, 这个规则也称作变换.</p>
+<p>操作系统中一次完整的寻址, 经过段变换(Segment Translation)和页变换(Page Translation). 两种变换的示意图如下 </p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-23-21-24-05-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>段变换(Segment Translation): 将逻辑地址（虚拟地址）变换为线性地址，如果没有开启分页机制，则变换为物理地址。</p>
+<p>页变换(Page Translation) : 将线性地址变换为物理地址</p>
+<p>一个逻辑地址(LOGICAL ADDRESS)通过一次完整的寻址经过两次变换段变换和页变换. 如果页变换没有开启, 则线性地址(LINEAR ADDRESS)经过段变换的地址直接映射到物理地址(PHYSICAL ADDRESS).</p>
+<p>所以可以总结, 寻址情况有两种</p>
+<ol>
+<li><p>经过一次段变换后实现寻址</p>
+</li>
+<li><p>经过段变换和页变换后实现寻址</p>
+</li>
+</ol>
+<h2 id="段变换寻址"><a href="#段变换寻址" class="headerlink" title="段变换寻址"></a>段变换寻址</h2><p>段变换寻址也称在保护模式下寻址。</p>
+<p>内存是分段的，通过一种机制如何寻址到某一个内存段。</p>
+<h3 id="理论模型呈现"><a href="#理论模型呈现" class="headerlink" title="理论模型呈现"></a>理论模型呈现</h3><p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-26-11-56-07-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>在段变换中, 逻辑地址中选择子(Selector)会指向描述符表(Descriptor Table)的段描述符(Segment Descriptor), 再根据段描述符中记录的基地址与逻辑地址的偏移值(OFFSET)来得到新的地址. </p>
+<p>如果分页机制没有开启, 那么新的地址就是得到物理地址. 否则, 得到的新地址是一个线性地址, 需经过页变换才能得到物理地址. 所述如下图</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-14-16-01-08-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里有几个概念需要澄清一下</p>
+<p>描述符表(Descriptor Table), 是一个数据结构里面设置了多个描述符组成的表单,通常是GDT或者LDT. </p>
+<p>选择子(Selector), 是用于指向描述符表中某一个描述符，其实也是一个偏移值， 所以称作选择子. GDTR 确定了基地址, Selector 确定了偏移值。确定GDT中的某一个描述符。</p>
+<p>段描述符(Segment Descriptor), 用于指向一段已经划分好的内存基地址, 并且还描述了这个内存段的限长等其他信息. </p>
+<p>总之，这里的Selector是GDT的一个偏移值，OFFSET线性地址段的偏移值。所以逻辑地址（Logical address)的构成是两个偏移地址的组合（selector, offset)。</p>
+<p>最终还是符合一个寻址原则：基地址+偏移地址，并且由前一个地址推导出后面一个地址。</p>
+<h3 id="代码呈现"><a href="#代码呈现" class="headerlink" title="代码呈现"></a>代码呈现</h3><p>根据上面的一段论述, 现在已经确认好了模型</p>
+<p>再来看看代码中是如何实现的?</p>
+<p>代码在<strong>Setup.s</strong>中体现</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs c">end_move:<br>    mov    $SETUPSEG, %ax    <span class="hljs-meta"># right, forgot this at first. didn<span class="hljs-string">&#x27;t work :-)</span></span><br><span class="hljs-string"><span class="hljs-meta">    mov    %ax, %ds</span></span><br><span class="hljs-string"><span class="hljs-meta">    lidt    idt_48        # load idt with 0,0</span></span><br><span class="hljs-string"><span class="hljs-meta">    lgdt    gdt_48        # load gdt with whatever appropriate</span></span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs c">gdt_48:<br>    .word    <span class="hljs-number">0x800</span>            <span class="hljs-meta"># gdt limit=2048, 256 GDT entries</span><br>    .word   <span class="hljs-number">512</span>+gdt, <span class="hljs-number">0x9</span>      <span class="hljs-meta"># gdt base = 0X9xxxx, </span><br>    # <span class="hljs-number">512</span>+gdt is the real gdt after setup is moved to <span class="hljs-number">0x9020</span> * <span class="hljs-number">0x10</span><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c">gdt:<br>    .word    <span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>,<span class="hljs-number">0</span>        <span class="hljs-meta"># dummy</span><br><br>    .word    <span class="hljs-number">0x07FF</span>        # <span class="hljs-number">8</span>Mb - limit=<span class="hljs-number">2047</span> (<span class="hljs-number">2048</span>*<span class="hljs-number">4096</span>=<span class="hljs-number">8</span>Mb)<br>    .word    <span class="hljs-number">0x0000</span>        <span class="hljs-meta"># base address=0</span><br>    .word    <span class="hljs-number">0x9A00</span>        <span class="hljs-meta"># code read/exec</span><br>    .word    <span class="hljs-number">0x00C0</span>        <span class="hljs-meta"># granularity=4096, 386</span><br><br>    .word    <span class="hljs-number">0x07FF</span>        # <span class="hljs-number">8</span>Mb - limit=<span class="hljs-number">2047</span> (<span class="hljs-number">2048</span>*<span class="hljs-number">4096</span>=<span class="hljs-number">8</span>Mb)<br>    .word    <span class="hljs-number">0x0000</span>        <span class="hljs-meta"># base address=0</span><br>    .word    <span class="hljs-number">0x9200</span>        <span class="hljs-meta"># data read/write</span><br>    .word    <span class="hljs-number">0x00C0</span>        <span class="hljs-meta"># granularity=4096, 386</span><br></code></pre></td></tr></table></figure>
+
+<p>上方的几段代码执行后, 完成了工作如下图所示</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-24-13-26-46-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>lgdt命令将gdt_48 的数据结构加载到GDTR中, GDTR是一个位于CPU内的寄存器。 48bit 和 数据结构是取决于GDTR的大小和结构. ( 数据结构为 32bit 基地址 | 16bit 段限长。)  限长设置0x800 . </p>
+<p>GDT中包含 256 GDT entries, 但是只是用了3个entries .  第一项 为 空 ； 第二项为 code ; 第三项为data。</p>
+<p>gdt 变量是一个地址。512+gdt 是移动后的gdt基地址. </p>
+<p>在完成上述的初始化配置后, CPU的寻址过程就是 通过读取GDTR的高32bit找到GDT, 根据GDT中的描述符GD entry 的基地址找到对应的内存段, 在结合offset偏移值, 最后获取到数据. 如下图所示.</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-12-19-08-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>Segment Descriptor 段描述符是一个64bit数据结构的描述符，数据结构定义如下</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-14-16-24-19-image.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="为什么需要段机制-保护模式"><a href="#为什么需要段机制-保护模式" class="headerlink" title="为什么需要段机制(保护模式)?"></a>为什么需要段机制(保护模式)?</h3><p><strong>实模式寻址VS保护模式寻址</strong></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-05-30-11-09-43-image.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-05-30-11-09-56-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>从上方描述，“索引值”包含 内存段的基地址 ，段的最大长度值和段的访问级别。因为有这几个参数，内存访问都遵循着这个规律，所以保护了其他的内存段，程序访问时不会超过其他内存边界，不会影响到其他的内存。另外还有访问时的权限，说明只有特定的程序访问特定的内存段，所以也起到了保护作用。</p>
+<p>保护模式寻址 需要通过一个段描述符(设置了寻址的属性)，作为映射到物理地址的一个中间手续。</p>
+<p>举一个不恰当的例子。就像用户作为CPU，要想存钱和取钱需要经过银行柜台的认证和许可才可以取钱。这里的银行柜台就是中间手续.</p>
+<p>银行柜台能够对银行中的钱起到保护作用；相当于描述符能够对内存起到保护作用。</p>
+<p>银行柜台会告诉你不同身份的用户可以存取多少钱，也就是描述符会告诉你内存段的限长。银行柜台再你取钱时会确定你的身份信息, 如果另外一个人来取钱，肯定是不允许的。对于不同身份不同级别的程序，对内存的操作权限也是不同的。</p>
+<p>相对于实模式，连银行柜台都没有，可以直接获取金库的钱。所以这很不安全。</p>
+<h2 id="页变换寻址"><a href="#页变换寻址" class="headerlink" title="页变换寻址"></a>页变换寻址</h2><h3 id="为什么需要分页机制"><a href="#为什么需要分页机制" class="headerlink" title="为什么需要分页机制?"></a>为什么需要分页机制?</h3><p>我们看到，分段管理机制已经提供了很好的保护机制，那为什么还要加上分页管理机制呢？其实它的主要目的在于实现虚拟存储器（虚拟内存）。线性地址中任意一个页都能映射到物理地址中的任何一个页，这无疑使得内存管理变得相当灵活。</p>
+<p>虚拟内存允许程序使用比实际物理内存更大的内存空间，同时具有以下特点：</p>
+<ol>
+<li>虚拟内存空间的大小可以超出物理内存空间大小。</li>
+<li>通过操作系统的管理和调用，虚拟内存和物理内存之间的映射关系可以变化。</li>
+</ol>
+<p>因此，虚拟内存提供了一种灵活的内存管理方式，使得不同的进程之间彼此独立，使得某一个进程在执行时看起来拥有独立的地址空间，避免了不同进程的地址冲突问题。而线性地址空间则是实现虚拟内存机制的方式，它为程序提供了一种连续的地址空间，使得程序看起来具有独立的地址空间，与其他的程序和操作系统本身隔离开来。</p>
+<h3 id="理论模型呈现-1"><a href="#理论模型呈现-1" class="headerlink" title="理论模型呈现"></a>理论模型呈现</h3><p>页变换是将线性地址转化为物理地址，将线性地址空间转化为物理地址空间</p>
+<p> 线性地址来源是由逻辑地址经过段变换后得到的</p>
+<p>一个线性地址组成 如下 </p>
+<p>DIR | PAGE | OFFSET </p>
+<p>DIR 包含页目录表项(PDT entry)的地址，也就是页目录表的偏移地址</p>
+<p>PAGE 包含页表项(PT entry)的地址，也就是页表的偏移地址</p>
+<p>OFFSET 包含内存页(4K)的偏移地址</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-23-22-04-45-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>这张图表示如何通过线性地址寻址到物理地址的. 首先将线性地址拆分成三块分别是DIR, PAGE, OFFSET. </p>
+<p>CR3是属于CPU中的寄存器包含着某个页目录表(PDT)的基地址, 而DIR则可以进一步地确认PDT中具体使用到哪个页目录项(PD entry)</p>
+<p>页目录项(PD entry)包含着某个页表的基地址, 而线性地址中的PAGE则可以进一步地确定具体是哪个页表项</p>
+<p>页表项中包含着某个内存分页（PAGE FRAME或者称为页帧）的基地址, 而OFFSET偏移值则可以进一步地确定内存分页中具体的内存地址.</p>
+<p>总的来看, 不管是段变换还是页变换，寻址依旧是遵守一个原则就是, 基地址+ 偏移值，并且由前面一个推导出后面一个。</p>
+<h3 id="代码呈现-1"><a href="#代码呈现-1" class="headerlink" title="代码呈现"></a>代码呈现</h3><p>说完了分页机制寻址模型, 接下来看看代码是如何实现的</p>
+<p>关于分页的工作主要在代码文件head.s中, 整个代码文件主要完成的工作有:</p>
+<p><strong>head.s</strong>做了什么工作</p>
+<ol>
+<li><p>从这里开始,内核完全都是在保护模式下运行了</p>
+</li>
+<li><p>加载各个数据段寄存器,重新设置中断描述符表 idt</p>
+</li>
+<li><p>然后重新设置全局描述符表 gdt</p>
+</li>
+<li><p>设置管理内存的分页处理机制</p>
+</li>
+<li><p>紧随后面放置共可寻址 16MB 内存的 4 个页表,并分别设置它们的表项</p>
+</li>
+</ol>
+<p>从以上来看, 与分页机制相关的工作是3,4,5几个步骤. 工作内容3其实已经在分段机制阶段说明了, 不再赘述. 4和5工作内容详细展开来讲讲. 下面关于页变换实现的步骤陈述如下</p>
+<p>第一步: 页目录表和页表初始化</p>
+<p>为1个页目录表和 4 个页表（为了能够索引 16MB 内存空间）在内核中申请空间。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs nasm">....<br>pg_dir:<br>....<br>/*<br> * I put the kernel page tables right after the page directory,<br> * using 4 of them to span 16 Mb of physical memory. People with<br> * more than 16MB will have to expand this.<br> */<br>.org 0x1000<br>pg0:<br><br>.org 0x2000<br>pg1:<br><br>.org 0x3000<br>pg2:<br><br>.org 0x4000<br>pg3:<br><br>.org 0x5000<br></code></pre></td></tr></table></figure>
+
+<p>第二步: 清空页目录表和 4 个页表的内容。如代码 201~204 行所示</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-15-41-image.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-16-17-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>第三步: 设置页目录表项映射4个页表</p>
+<p>内核中我们设置了4个页表, 所以我们需要在页目录表中设置4个页目录项来索引它们. 如代码205 ~ 208 行所示. 第一个页表所在的线性地址为0x1000, 赋予第一个页表的属性为0x7, 表示该页存在, 可读可写. 由于每个页目录项大小为4B, 故pg_dir+4可以跳转到下一个页目录项.</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-20-38-image.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-51-08-image.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-52-44-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>第四步: 对页表中的每项映射内存分页地址</p>
+<p>设置每个页表中的页表项。每个页表大小为 4*1024B（标识物理页号范围：0-0xfff），如代码 209~214 行所示。<code>pg3+4092</code> 表示从最后一页的最后一个页表项开始填起，填写的内容为<strong>该页表项所映射的物理内存页号以及该页的属性0x7</strong>，将循环判断变量 eax 减去 4K，继续设置下一页表项，直至零，表示已将 4096 个页表项填写完毕，即 16M 内存分页完毕。<img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-56-14-image.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-59-32-image.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-17-59-52-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>第五步: 设置CR3映射到页目录表和设置CR0开启分页机制</p>
+<p>设置页目录表的起始地址. 将页目录表起始地址赋予CR3寄存器, 如代码216-217行所示. 开启分页机制. 如代码218 - 221 行所示, 将CR0寄存器的最高位设置为1来开启分页机制.</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-06-25-18-01-29-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>总结：经过以上几个步骤之后，配置好了以下几个方面：<br>1.CR3指向页目录表<br>2.页目录表中的页目录项指向4个页表<br>3.页表中的页表项指向内存寻址空间（以4K分隔）  </p>
+<h1 id="运行和调试"><a href="#运行和调试" class="headerlink" title="运行和调试"></a>运行和调试</h1><h2 id="线性地址到物理地址"><a href="#线性地址到物理地址" class="headerlink" title="线性地址到物理地址"></a>线性地址到物理地址</h2><p>在分页模式下，线性地址到物理地址的过程会涉及：</p>
+<p>CR3 – Page DIR – Page DIR Entry – Page Table – Page Table Entry – Frame Page (physical address)</p>
+<p>主要是想查看相关变量和寄存器，看下是否符合理论并且能够加深理解</p>
+<p>通过Bochs 虚拟机，并输入相关指令可以查看寄存器和变量</p>
+<ol>
+<li><p>查看CR3寄存器</p>
+<p>CR3寄存器中设置了页目录的基地址</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-16-19-38-11-image.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-16-19-37-44-image.png" srcset="/img/loading.gif" lazyload></p>
+<ol start="2">
+<li><p>查看Page DIR</p>
+<p>按照理论，CR3的寄存器地址就是Page DIR</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-16-19-47-42-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>通过上图的指令，可以查看几个页目录表的地址内容。从代码里面可以看到主要设置了4个页目录表。基本上与上方的显示结果对应。</p>
+<p>第一个Page DIR ： 0x1027   &#x3D; 0x1000 + 0x27 </p>
+<p>0x1000是Page Table的地址， 0x27 是关于设置页的属性。</p>
+</li>
+<li><p>查看Page Table</p>
+<p>通过相同的方法查看内存地址0x1000得到的值是0x800000.这正好是一个FRAME PAGE的地址。内存寻址空间的最大在0xFFFFFF</p>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li><p>通过调试查看线性地址到物理地址寻址过程相关的地址。对代码有了 更深的理解。回顾一下线性地址组成</p>
+<p>                                            DIR | PAGE | OFFSET</p>
+<p>LINEAR ADDRESS: 0x0(+DIR) – 0x1000(+PAGE) – 0x800000(+offset)<br>假设线性地址的偏移地址都是零，用（0，0，0）来表示。所以这个线性地址得到的最终物理地址是0x800000。</p>
+<p>如果线性地址LINEAR ADDRESS: (1,14,25)，那么最终计算结果也就前一个地址加上该位置的偏移地址后，最终推导出物理地址。而线性地址中的每一位其实是与之相对应容器的偏移值。DIR是PAGE DIR的偏移值；PAGE是PAGE TABLE的偏移值; OFFSET是FRAME PAGE的偏移值。</p>
+</li>
+</ol>
+<h2 id="逻辑地址（虚拟地址）到线性地址"><a href="#逻辑地址（虚拟地址）到线性地址" class="headerlink" title="逻辑地址（虚拟地址）到线性地址"></a>逻辑地址（虚拟地址）到线性地址</h2><p>在分段模式下，逻辑地址到线性地址的过程会涉及：</p>
+<p>GDTR – Descriptor Table – Segment Descriptor – 线性地址</p>
+<ol>
+<li><p>查看GDTR </p>
+<p>在bochs中输入sreg可以查看到gdtr保存的地址, 这个0x5cb8就是指向Descriptor Table的地址</p>
+</li>
+</ol>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-17-22-05-03-image.png" srcset="/img/loading.gif" lazyload></p>
+<ol start="2">
+<li><p>查看Descriptor Table与Segment Descriptor</p>
+<p>通过x查看某内存地址的值. 0x5cb8是gdt的基地址, +8 可以查看下一个Descriptor , 一次查看几个Descriptors, 验证一下是否与书上, 代码上的是否一致. </p>
+<p>移动后的GDT,如下图所示：</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-20-21-10-23-image.png" srcset="/img/loading.gif" lazyload></p>
+</li>
+</ol>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-21-22-19-06-info%20gdt.png" srcset="/img/loading.gif" lazyload></p>
+<p>查看相同地址，在bochs下的显示结果：</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-20-21-31-14-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>查看相同地址，在qemu下的显示结果：</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-17-22-22-12-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>查看理论上移动后的GDT基地址：</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/2023-08-17-22-16-17-image.png" srcset="/img/loading.gif" lazyload></p>
+<p>分段寻址参考：</p>
+<p><img src="/../img/Linux-0-11-MMU-Addressing-Machanism/segment-ma.jpg" srcset="/img/loading.gif" lazyload></p>
+<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><ol>
+<li><p>因为Segment descriptor的数据结构是64bit(8B), 所以base+8可以找到下一个descriptor</p>
+</li>
+<li><p>通过qemu和bochs打印的descriptor会不一样，但是和理论的大差不差。</p>
+</li>
+<li><p>descriptor最后寻址到的是线性地址。如果没有开启分页模式那实际上就是物理地址。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="http://www.oldlinux.org/download/clk011c-3.0.pdf">Linux  内核完全注释</a></p>
+<p><a target="_blank" rel="noopener" href="https://weread.qq.com/web/bookReview/list?bookId=eb432a1059346feb43178b3">Linux 内核设计的艺术</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/67714693?utm_id=0">segmentation和保护模式（二）</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7084117128508342302">深入理解Linux内核虚拟内存原理与实现 - 掘金</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6976168717142982693">【Linux 0.11】第十三章 内存管理 - 掘金</a></p>
+<p><a target="_blank" rel="noopener" href="https://datasheetspdf.com/datasheet/I386.html">I386 Datasheet | Intel - Datasheetspdf.com</a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/OS/">#OS</a>
+      
+        <a href="/tags/MMU/">#MMU</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism</div>
+      <div>https://pans0ul.github.io/2023/11/23/Linux-0-11-MMU-Addressing-Machanism/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>pans0ul</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>November 23, 2023</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/09/IPC-how-similar-between-openharmony-and-android/" title="IPC: openharmony与android有多相似/IPC: how similar between openharmony and android">
+                        <span class="hidden-mobile">IPC: openharmony与android有多相似/IPC: how similar between openharmony and android</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

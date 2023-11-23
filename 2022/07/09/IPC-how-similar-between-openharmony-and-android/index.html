@@ -1,0 +1,612 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="pans0ul">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="IPC: openharmony与android有多相似&#x2F;IPC: how similar between openharmony and android通过本篇文章 你会发现 在IPC这块的代码和架构设计 . openharmony（以下简称oh）与android 有相当大程度的相似性 可能有人会认为oh是在抄袭android, 所以给予oh负面的评价. 本篇的主要目的 不是为了贬低o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPC: openharmony与android有多相似&#x2F;IPC: how similar between openharmony and android">
+<meta property="og:url" content="https://pans0ul.github.io/2022/07/09/IPC-how-similar-between-openharmony-and-android/index.html">
+<meta property="og:site_name" content="pans0ul blog">
+<meta property="og:description" content="IPC: openharmony与android有多相似&#x2F;IPC: how similar between openharmony and android通过本篇文章 你会发现 在IPC这块的代码和架构设计 . openharmony（以下简称oh）与android 有相当大程度的相似性 可能有人会认为oh是在抄袭android, 所以给予oh负面的评价. 本篇的主要目的 不是为了贬低o">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pans0ul.github.io/img/IPC-how-similar-between-openharmony-and-android/workcircle.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/IPC-how-similar-between-openharmony-and-android/arch-android.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/IPC-how-similar-between-openharmony-and-android/arch-oh.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/IPC-how-similar-between-openharmony-and-android/stack.jpg">
+<meta property="og:image" content="https://pans0ul.github.io/img/IPC-how-similar-between-openharmony-and-android/code.jpg">
+<meta property="article:published_time" content="2022-07-09T08:02:53.000Z">
+<meta property="article:modified_time" content="2023-11-23T07:51:20.501Z">
+<meta property="article:author" content="pans0ul">
+<meta property="article:tag" content="OS">
+<meta property="article:tag" content="IPC">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pans0ul.github.io/img/IPC-how-similar-between-openharmony-and-android/workcircle.png">
+  
+  
+  
+  <title>IPC: openharmony与android有多相似/IPC: how similar between openharmony and android - pans0ul blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pans0ul.github.io","root":"/","version":"1.9.2","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>pans0ul&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://my.oschina.net/pansoul">
+                <i class="iconfont icon-pen"></i>
+                OSChina
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">IPC: openharmony与android有多相似/IPC: how similar between openharmony and android</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-07-09 16:02" pubdate>
+          July 9, 2022 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">IPC: openharmony与android有多相似/IPC: how similar between openharmony and android</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="IPC-openharmony与android有多相似-x2F-IPC-how-similar-between-openharmony-and-android"><a href="#IPC-openharmony与android有多相似-x2F-IPC-how-similar-between-openharmony-and-android" class="headerlink" title="IPC: openharmony与android有多相似&#x2F;IPC: how similar between openharmony and android"></a>IPC: openharmony与android有多相似&#x2F;IPC: how similar between openharmony and android</h1><p>通过本篇文章 你会发现 在IPC这块的代码和架构设计 . openharmony（以下简称oh）与android 有相当大程度的相似性</p>
+<p>可能有人会认为oh是在抄袭android, 所以给予oh负面的评价.</p>
+<p>本篇的主要目的 不是为了贬低oh或者国人os, 只是从技术角度展示oh的真实情况. 至于什么样的评价,取决于其他人加入了什么样的想法.</p>
+<p>科学技术代表智慧, 智慧没有国界 更没有界限 , 都是人类智慧的结晶</p>
+<p>好了开始正文</p>
+<h2 id="IPC-介绍"><a href="#IPC-介绍" class="headerlink" title="IPC 介绍"></a>IPC 介绍</h2><p>Binder-IPC 是一种进程间通信机制，基于开源的 OpenBinder 实现；OpenBinder 起初由 Be Inc. 开发，后由 Plam Inc. 接手。<br>从字面上来解释 Binder 有胶水、粘合剂的意思，顾名思义就是粘和不同的进程，使之实现通信。</p>
+<h2 id="工作逻辑"><a href="#工作逻辑" class="headerlink" title="工作逻辑"></a>工作逻辑</h2><p><img src="/../img/IPC-how-similar-between-openharmony-and-android/workcircle.png" srcset="/img/loading.gif" lazyload alt="IPC-binder工作流程"></p>
+<ol>
+<li>以上这种工作逻辑来源于android的分析资料, 通过阅读oh的代码后,发现这张图也同样适用.</li>
+</ol>
+<h2 id="架构方面"><a href="#架构方面" class="headerlink" title="架构方面"></a>架构方面</h2><p><strong>android</strong></p>
+<p><img src="/../img/IPC-how-similar-between-openharmony-and-android/arch-android.png" srcset="/img/loading.gif" lazyload alt="android-binder 架构"></p>
+<p><strong>openharmony</strong></p>
+<p><img src="/../img/IPC-how-similar-between-openharmony-and-android/arch-oh.png" srcset="/img/loading.gif" lazyload alt="oh-binder 架构"></p>
+<ol>
+<li>以oh3.1为例,整理了oh-IPC的类关系图,再经过整理、删减，可以发现类的关系架构图能够和android的相对应.</li>
+</ol>
+<h2 id="代码方面"><a href="#代码方面" class="headerlink" title="代码方面"></a>代码方面</h2><p><img src="/../img/IPC-how-similar-between-openharmony-and-android/stack.jpg" srcset="/img/loading.gif" lazyload alt="层级关系"></p>
+<p><img src="/../img/IPC-how-similar-between-openharmony-and-android/code.jpg" srcset="/img/loading.gif" lazyload alt="代码对比"></p>
+<ol>
+<li>android-IPC中的IPCThreadState与oh-IPC的BinderInvoker存在对应关系</li>
+</ol>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ol>
+<li>以上对比了openharmony与android的架构,层级,工作逻辑还有代码. 他们基本上是差不多的. 可以说在以上展示的代码片段中, 基本一样，只是换掉了不同的名称</li>
+<li>要说为什么要这样. 这个取决于他们都选用了同一个IPC-binder的通信框架. 技术框架一旦确定，整体方面一般不会发生变化。最多修改的是一些枝叶</li>
+<li>在项目和产品开发中，技术选型至关重要。一旦确定后，后面的开发工作都是会围绕和基于这个选型展开</li>
+<li>对于openharmony的评价，虽然上面有很多android 的影子，但是oh自身具备了一些android不具备的功能和特点. 例如HDF驱动框架</li>
+<li>binder原本是一个开源项目, 不能将binder与某种操作系统绑定起来。只是这两种操作系统都采用了binder-IPC方式</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>书名：深入解析Android 5.0系统 作者：刘超 </li>
+<li>书名：Android的设计与实现：卷Ⅰ 作者：杨云君</li>
+<li><a target="_blank" rel="noopener" href="https://gitee.com/openharmony/communication_ipc?_from=gitee_search">openharmony ipc</a></li>
+<li><a target="_blank" rel="noopener" href="http://gityuan.com/2015/10/31/binder-prepare/">Binder系列—开篇</a></li>
+<li><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/35519585">写给 Android 应用工程师的 Binder 原理剖析</a></li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/OS/">#OS</a>
+      
+        <a href="/tags/IPC/">#IPC</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>IPC: openharmony与android有多相似/IPC: how similar between openharmony and android</div>
+      <div>https://pans0ul.github.io/2022/07/09/IPC-how-similar-between-openharmony-and-android/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>pans0ul</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 9, 2022</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2023/11/23/Linux-0-11-MMU-Addressing-Machanism/" title="Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux 0.11 内存管理-寻址 Linux 0.11 MMU Addressing Machanism</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/07/03/comprehension-of-team-weekly-report/" title="团队周例会开展心得 comprehension of team weekly report">
+                        <span class="hidden-mobile">团队周例会开展心得 comprehension of team weekly report</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

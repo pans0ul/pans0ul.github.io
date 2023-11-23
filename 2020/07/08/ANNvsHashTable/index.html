@@ -1,0 +1,600 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="pans0ul">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ANN( artificial neural network ) VS Hash TableThe story began that when I reviewed Hash table in Data Structure lesson and I saw the figure of Hash table principle ,suddenly , a idea comes to my mind">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ANN vs Hash Table">
+<meta property="og:url" content="https://pans0ul.github.io/2020/07/08/ANNvsHashTable/index.html">
+<meta property="og:site_name" content="pans0ul blog">
+<meta property="og:description" content="ANN( artificial neural network ) VS Hash TableThe story began that when I reviewed Hash table in Data Structure lesson and I saw the figure of Hash table principle ,suddenly , a idea comes to my mind">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pans0ul.github.io/img/ANNvsHashTable/ann.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/ANNvsHashTable/hash.png">
+<meta property="article:published_time" content="2020-07-08T10:04:42.000Z">
+<meta property="article:modified_time" content="2023-11-23T07:51:20.501Z">
+<meta property="article:author" content="pans0ul">
+<meta property="article:tag" content="AI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pans0ul.github.io/img/ANNvsHashTable/ann.png">
+  
+  
+  
+  <title>ANN vs Hash Table - pans0ul blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pans0ul.github.io","root":"/","version":"1.9.2","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>pans0ul&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://my.oschina.net/pansoul">
+                <i class="iconfont icon-pen"></i>
+                OSChina
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">ANN vs Hash Table</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2020-07-08 18:04" pubdate>
+          July 8, 2020 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">ANN vs Hash Table</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="ANN-artificial-neural-network-VS-Hash-Table"><a href="#ANN-artificial-neural-network-VS-Hash-Table" class="headerlink" title="ANN( artificial neural network ) VS Hash Table"></a>ANN( artificial neural network ) VS Hash Table</h1><p>The story began that when I reviewed Hash table in Data Structure lesson and I saw the figure of Hash table principle ,suddenly , a idea comes to my mind that there’s somehow relationship between ANN(artificial neural network ) and  Hash Table .</p>
+<h2 id="What’s-the-relationship"><a href="#What’s-the-relationship" class="headerlink" title="What’s the  relationship ?"></a>What’s the  relationship ?</h2><p><img src="/../img/ANNvsHashTable/ann.png" srcset="/img/loading.gif" lazyload alt="figure of ANN"></p>
+<p><img src="/../img/ANNvsHashTable/hash.png" srcset="/img/loading.gif" lazyload alt="figure of Hash table"></p>
+<p>We could notice that both two figures have three part : the left ,the middle ,the right ; Actually , each part of the middle is function part . The only difference between these is that the function of ANN is trained by tons of data and the function of Hash table ,called hash function ,is designed by manual actions usually .</p>
+<p>The former funciton is unknown ,black box .But the later function is known ,white box .</p>
+<h3 id="About-the-history"><a href="#About-the-history" class="headerlink" title="About the history"></a>About the history</h3><h4 id="Hash-function"><a href="#Hash-function" class="headerlink" title="Hash function"></a>Hash function</h4><blockquote>
+<p>The term “hash” offers a natural analogy with its non-technical meaning (to “chop” or “make a mess” out of something), given how hash functions scramble their input data to derive their output.[20] In his research for the precise origin of the term, Donald Knuth notes that, while Hans Peter Luhn of IBM appears to have been the first to use the concept of a hash function in a memo dated January 1953, the term itself would only appear in published literature in the late 1960s, on Herbert Hellerman’s Digital Computer System Principles, even though it was already widespread jargon by then.[21]</p>
+</blockquote>
+<h4 id="ANN"><a href="#ANN" class="headerlink" title="ANN"></a>ANN</h4><blockquote>
+<p>Warren McCulloch and Walter Pitts[4] (1943) opened the subject by creating a computational model for neural networks.[5] In the late 1940s, D. O. Hebb[6] created a learning hypothesis based on the mechanism of neural plasticity that became known as Hebbian learning. Farley and Wesley A. Clark[7] (1954) first used computational machines, then called “calculators”, to simulate a Hebbian network. Rosenblatt[8] (1958) created the perceptron.[9] The first functional networks with many layers were published by Ivakhnenko and Lapa in 1965, as the Group Method of Data Handling.[10][11][12] The basics of continuous backpropagation[10][13][14][15] were derived in the context of control theory by Kelley[16] in 1960 and by Bryson in 1961,[17] using principles of dynamic programming.</p>
+</blockquote>
+<p>According to these history , the first ANN came out at 1943 and the first concept of hash function came out at 1953 . The time between these are so close , it can’t be wasn’t somehow relationship in there !!</p>
+<h2 id="What’s-role-of-Hash-table-played-in-Data-Structure"><a href="#What’s-role-of-Hash-table-played-in-Data-Structure" class="headerlink" title="What’s role of Hash table played in Data Structure ?"></a>What’s role of Hash table played in Data Structure ?</h2><blockquote>
+<p>In computing, a hash table (hash map) is a data structure that implements an associative array abstract data type, a structure that can map keys to values. A hash table uses a hash function to compute an index, also called a hash code, into an array of buckets or slots, from which the desired value can be found. During lookup, the key is hashed and the resulting hash indicates where the corresponding value is stored.</p>
+</blockquote>
+<h3 id="Why-Hash-table-called-“Hash-table-“"><a href="#Why-Hash-table-called-“Hash-table-“" class="headerlink" title="Why Hash table called “Hash table “?"></a>Why Hash table called “Hash table “?</h3><p>I supposed Hash is people’s name who invented Hash function and Hash table . But actually , it wasn’t . </p>
+<p><a target="_blank" rel="noopener" href="https://softwareengineering.stackexchange.com/questions/108124/why-it-is-called-hash-table-or-hash-function-hash-doesnt-make-any-sense-t">Why it is called “hash table”, or “hash function”? </a></p>
+<h2 id="What’s-role-of-ANN-played-in-Machine-Learning"><a href="#What’s-role-of-ANN-played-in-Machine-Learning" class="headerlink" title="What’s role of ANN played in Machine Learning ?"></a>What’s role of ANN played in Machine Learning ?</h2><blockquote>
+<p>Artificial neural networks (ANN) or connectionist systems are computing systems vaguely inspired by the biological neural networks that constitute animal brains.</p>
+</blockquote>
+<blockquote>
+<p>The data structures and functionality of neural nets are designed to simulate associative memory. Neural nets learn by processing examples, each of which contains a known “input” and “result,” forming probability-weighted asociations between the two, which are stored within the data structure of the net itself. (The “input” here is more accurately called an input set, since it generally consists of multiple independent variables, rather than a single value.) Thus, the “learning” of a neural net from a given example is the difference in the state of the net before and after processing the example. After being given a sufficient number of examples, the net becomes capable of predicting results from inputs, using the associations built from the example set. If a feedback loop is provided to the neural net about the accuracy of its predictions, it continues to refine its associations, resulting in an ever-increasing level of accuracy. In short, there is a direct relationship between the number and diversity of examples processed by a neural net and the accuracy of its predictions. This is why a neural net gets “better” with use. What is interesting about neural nets is that because they are indiscriminate in the way they form associations, they can form unexpected associations, and reveal relationships and dependencies that were not previously known.</p>
+</blockquote>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><p>We discussed the similarity and differences of ANN and Hash table in aspects of principle and history , which hopefully we could discover the new idea that are able to optimize algorithms of both or apply to the some specific issues  . One of the applications ,in my opinion , is that the Hash function could be replace by method of DeepLearning whose function trained by data . The advantages of this method is save algorithms development time of handled design .</p>
+<p>On the other hand , because of the same structure form –input, functions, output – it’s unfortunately that , in some way ,there is no prograss about AI field during computer science development .</p>
+<p>If we want to make some application using ideas we discovered ,we have to research in it more .</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Artificial_neural_network">wiki&#x2F;Artificial_neural_network</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hash_table">wiki&#x2F;Hash_table</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Hash_function">wiki&#x2F;Hash_function</a></p>
+<p><a target="_blank" rel="noopener" href="https://softwareengineering.stackexchange.com/questions/108124/why-it-is-called-hash-table-or-hash-function-hash-doesnt-make-any-sense-t">Why it is called “hash table”, or “hash function”? </a></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/AI/">#AI</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ANN vs Hash Table</div>
+      <div>https://pans0ul.github.io/2020/07/08/ANNvsHashTable/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>pans0ul</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>July 8, 2020</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/06/26/OS-Lifetime/" title="OS Lifetime">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">OS Lifetime</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2020/05/09/RobomasterRovo/" title="Robomaster Evolution">
+                        <span class="hidden-mobile">Robomaster Evolution</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
