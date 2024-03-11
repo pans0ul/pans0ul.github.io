@@ -1,0 +1,643 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="pans0ul">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="TI-Tintin-OPT8241二次开发和应用系列–Theory Level(3&#x2F;3)-参数理解理解一些深度相机的基本参数对系统理解和在开发中起到至关重要的作用，例如参数integration time ,unambiguous range,Depth resolution等。 1.integration time在“TI-Tintin-OPT8241二次开发和应用系列–Theory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TI-Tintin-OPT8241二次开发和应用系列--Theory Level(3&#x2F;3)-参数理解">
+<meta property="og:url" content="https://pans0ul.github.io/2019/01/26/TOF-theory-3-3/index.html">
+<meta property="og:site_name" content="pans0ul blog">
+<meta property="og:description" content="TI-Tintin-OPT8241二次开发和应用系列–Theory Level(3&#x2F;3)-参数理解理解一些深度相机的基本参数对系统理解和在开发中起到至关重要的作用，例如参数integration time ,unambiguous range,Depth resolution等。 1.integration time在“TI-Tintin-OPT8241二次开发和应用系列–Theory">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(1).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(2).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(3).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(4).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(5).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(6).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(7).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(9).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(10).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(11).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(12).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(13).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(14).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(15).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(16).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(17).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(18).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(19).png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(20).png">
+<meta property="article:published_time" content="2019-01-26T08:59:24.000Z">
+<meta property="article:modified_time" content="2024-03-11T02:53:44.195Z">
+<meta property="article:author" content="pans0ul">
+<meta property="article:tag" content="CV">
+<meta property="article:tag" content="TOF">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pans0ul.github.io/img/TOF-theory-3-3/3-3%20(1).png">
+  
+  
+  
+  <title>TI-Tintin-OPT8241二次开发和应用系列--Theory Level(3/3)-参数理解 - pans0ul blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pans0ul.github.io","root":"/","version":"1.9.2","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>pans0ul&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://my.oschina.net/pansoul">
+                <i class="iconfont icon-pen"></i>
+                OSChina
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">TI-Tintin-OPT8241二次开发和应用系列--Theory Level(3/3)-参数理解</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-01-26 16:59" pubdate>
+          January 26, 2019 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">TI-Tintin-OPT8241二次开发和应用系列--Theory Level(3/3)-参数理解</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="TI-Tintin-OPT8241二次开发和应用系列–Theory-Level-3-x2F-3-参数理解"><a href="#TI-Tintin-OPT8241二次开发和应用系列–Theory-Level-3-x2F-3-参数理解" class="headerlink" title="TI-Tintin-OPT8241二次开发和应用系列–Theory Level(3&#x2F;3)-参数理解"></a>TI-Tintin-OPT8241二次开发和应用系列–Theory Level(3&#x2F;3)-参数理解</h1><p>理解一些深度相机的基本参数对系统理解和在开发中起到至关重要的作用，例如参数integration time ,unambiguous range,Depth resolution等。</p>
+<h2 id="1-integration-time"><a href="#1-integration-time" class="headerlink" title="1.integration time"></a>1.integration time</h2><p>在“TI-Tintin-OPT8241二次开发和应用系列–Theory Level(1&#x2F;3)–4.TOF传感器（感光芯片）工作原理”中已经介绍，深度相机感光传感器的整个读取周期包括四个阶段，其中一个阶段就是integration。如果integration time越大，则接收的光子越多，能量越大，那么接收到的图像就越清晰，但过大的integration time会导致图像饱和。通常integration time设置在50%以下。integration time在OPT82中的说明：<br><img src="/../img/TOF-theory-3-3/3-3%20(1).png" srcset="/img/loading.gif" lazyload></p>
+<p>integration time在OPT92中的说明以及对应参数名称：<br><img src="/../img/TOF-theory-3-3/3-3%20(2).png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="2-unambiguous-range"><a href="#2-unambiguous-range" class="headerlink" title="2.unambiguous range"></a>2.unambiguous range</h2><h3 id="什么是unambiguous-range？"><a href="#什么是unambiguous-range？" class="headerlink" title="什么是unambiguous range？"></a>什么是unambiguous range？</h3><p>在“TI-Tintin-OPT8241二次开发和应用系列–Theory Level(1&#x2F;3)”距离d推导过程中，在坐标转换后计算相位theta，有一副很好的图，如下图所示：<br><img src="/../img/TOF-theory-3-3/3-3%20(3).png" srcset="/img/loading.gif" lazyload></p>
+<p>出自TI官方文档–system design</p>
+<p>图中的参数说明：<br><img src="/../img/TOF-theory-3-3/3-3%20(4).png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/TOF-theory-3-3/3-3%20(5).png" srcset="/img/loading.gif" lazyload></p>
+<p>角度theta 表示距离的相位，phase</p>
+<p>R表示：在图示中，表示这个圆的半径R；在公式中，R 表示unambiguous 并且 R&#x3D;Confidence (置信度)；</p>
+<hr>
+<p>为了求得距离d，所以要求theta，之后才能求得phase，计算出距离d，表示相机与物体的距离。</p>
+<p>为了了解系统，更加深入的理解这张图，思考其中的R代表的是什么意思？为什么 R&#x3D;Confidence ？距离d与R有什么关系？</p>
+<h3 id="Q1：为什么R表示的是unambiguous-range？距离d与R有什么关系？"><a href="#Q1：为什么R表示的是unambiguous-range？距离d与R有什么关系？" class="headerlink" title="Q1：为什么R表示的是unambiguous range？距离d与R有什么关系？"></a>Q1：为什么R表示的是unambiguous range？距离d与R有什么关系？</h3><p>从公式的角度理解，因为距离d的计算公式:<br><img src="/../img/TOF-theory-3-3/3-3%20(6).png" srcset="/img/loading.gif" lazyload></p>
+<p>，对比上图中R&#x3D;unambiguous range的公式，R少了距离d的什么？是theta&#x2F;2π，而少了的这部分正好表示的是距离d在总距离的时间占比。</p>
+<p>这样看来，R没有这项（这项为1）,也就是说R表示深度相机能够测量的最远距离。可以说距离d始终在R这个范围内，并且计算得到的距离d表示R的一部分。下图表示：<br><img src="/../img/TOF-theory-3-3/3-3%20(7).png" srcset="/img/loading.gif" lazyload></p>
+<p>因为，结合实际经验并且试想一下，在ambiguous（小于R或者超出R）的情况是怎么样的？图片呈现黑色，如果没有相位差，或者重叠，都是一种ambiguous的状态，都呈现黑色。距离太近会出现ambigious,距离太远也会出现ambigious ，所以range 是一个范围。</p>
+<p>再从图中设想一下，假设需要被检测的物体超过这个range，那么距离d的长度就会大于上图中圆的半径，超过这个圆的半径的长度就会截止，也就是说在图像上超过这个距离的被测物体无法显示（显示黑色）；当距离d的长度小于上图中圆的半径，很显然，结果同理。</p>
+<p>从公式上解释R的含义： R&#x3D;confidence&#x3D; C&#x2F;2F &#x3D;&gt; R&#x3D;tc&#x2F;2 公式的意思是：2分之光速经历一个时间周期T走过的距离。所以R表示的就是非重叠距离，并且把光速的距离分成每个周期。</p>
+<h3 id="Q2-R为什么与可测的距离相等？是最大可测的距离？"><a href="#Q2-R为什么与可测的距离相等？是最大可测的距离？" class="headerlink" title="Q2:R为什么与可测的距离相等？是最大可测的距离？"></a>Q2:R为什么与可测的距离相等？是最大可测的距离？</h3><p>因为，在“TI-Tintin-OPT8241二次开发和应用系列–Theory Level”文中提到，在固定红外发射频率的条件下，每一个周期的占空比是有限的，只有在这个占空比范围内才能够正常检测。</p>
+<p>而且，<img src="/../img/TOF-theory-3-3/3-3%20(9).png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/TOF-theory-3-3/3-3%20(10).png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/TOF-theory-3-3/3-3%20(11).png" srcset="/img/loading.gif" lazyload></p>
+<p>例如重叠之后，就不知道真实物体的距离了，假设能显示图像，range的范围是1-5米，超过5米的距离的物体重叠相位，真实物体的距离是7M，但是超过了range,图像上显示物体的距离只是2m，但是实际操作上，超过这个range之后图像一般显示黑色。</p>
+<h4 id="另外，R的实际公式"><a href="#另外，R的实际公式" class="headerlink" title="另外，R的实际公式"></a>另外，R的实际公式</h4><p>以上关于R的公式其实是一个理想的公式，实际公式如下：<br><img src="/../img/TOF-theory-3-3/3-3%20(12).png" srcset="/img/loading.gif" lazyload></p>
+<p>所以还会有另外两个参数可以设置，分别是mod_freq1 ， mod_freq2，关于他们更多详细内容，参考OPT9221芯片说明。</p>
+<h2 id="3-与数据输出相关的参数"><a href="#3-与数据输出相关的参数" class="headerlink" title="3.与数据输出相关的参数"></a>3.与数据输出相关的参数</h2><p>在“TI-Tintin-OPT8241二次开发和应用系列–Software Level”一文中，已经介绍了depthFrame包含那些信息，接下来将说明depthFrame是怎么构成的。<br><img src="/../img/TOF-theory-3-3/3-3%20(13).png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/TOF-theory-3-3/3-3%20(14).png" srcset="/img/loading.gif" lazyload></p>
+<p>一帧depthFrame有多个sub-frame组成；一个sub-frame有4个quad组成；每个quad被拆分成传感器处理的四个步骤。</p>
+<p>一帧depthFrame代表一幅深度图像；sub-frame代表深度图像上的每一个像素点；4个quad才能计算出该点像素的深度；</p>
+<p>相信看官们看出对应关系了。</p>
+<p>以上的所有参数都会在OPT9221芯片说明中体现，包含参数有以下：</p>
+<p>sub_frame_cnt_max – SUB_FRAME_CNT_MAX<br><img src="/../img/TOF-theory-3-3/3-3%20(15).png" srcset="/img/loading.gif" lazyload></p>
+<p>quad_cnt_max – QUAD_CNT_MAX<br><img src="/../img/TOF-theory-3-3/3-3%20(16).png" srcset="/img/loading.gif" lazyload></p>
+<p>freq_ratio – FREQ_RATIO<br><img src="/../img/TOF-theory-3-3/3-3%20(17).png" srcset="/img/loading.gif" lazyload></p>
+<p>op_clk_freq–OP_CLK_FREQ<br><img src="/../img/TOF-theory-3-3/3-3%20(18).png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/TOF-theory-3-3/3-3%20(19).png" srcset="/img/loading.gif" lazyload></p>
+<h4 id="小结："><a href="#小结：" class="headerlink" title="小结："></a>小结：</h4><p><strong>属于OPT8241的一些参数</strong></p>
+<p>op_clk_freq–OP_CLK_FREQ</p>
+<p>mod_freq1\mod_freq2</p>
+<p>freq_ratio – FREQ_RATIO</p>
+<p><strong>属于OPT9221的一些参数</strong></p>
+<p>Frame_rate</p>
+<p>sub_frame_cnt_max</p>
+<p>quad_cnt_max</p>
+<h2 id="4-Depth-resolution"><a href="#4-Depth-resolution" class="headerlink" title="4.Depth resolution"></a>4.Depth resolution</h2><p>对Depth resolution我刚开始只是一知半解。直到我向TI官方人员提问过后，才明白。他们的回答是这样的：</p>
+<p>Depth resolution is the standard deviation of the measured distance over a large set of frames captured int the system.  </p>
+<p>The only thing that “Depth Resolution” conveys is the precision of the depth measurement of the 3D ToF system. Typically, your image processing algorithm and your application would decide how much depth resolution is needed.  </p>
+<p>Please read through the user guide present in your system estimator installation folder to understand how to use the software.</p>
+<p>总结上面的话，就是说depth resolution 是一个深度测量的准确度偏差。例如被测物体实际物体是3m，按道理在图像上显示的深度也应该3m，如果depth resolution是1%，也就是说在图像上不能准确显示，会有0.03m(3m*0.01)的偏差，实际显示可能是2.97m；</p>
+<p>公式：<img src="/../img/TOF-theory-3-3/3-3%20(20).png" srcset="/img/loading.gif" lazyload></p>
+<p>从公式上解释就是，在有效的检测范围内，有效的接收图像、像素、分辨率，depth resolution 越小，越小越好。</p>
+<hr>
+<p>交流QQ： 365334601</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CV/">#CV</a>
+      
+        <a href="/tags/TOF/">#TOF</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TI-Tintin-OPT8241二次开发和应用系列--Theory Level(3/3)-参数理解</div>
+      <div>https://pans0ul.github.io/2019/01/26/TOF-theory-3-3/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>pans0ul</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 26, 2019</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/04/15/TOF-dev-Reading-Advice/" title="TI-Tintin-OPT8241二次开发和应用系列--建议阅读顺序">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TI-Tintin-OPT8241二次开发和应用系列--建议阅读顺序</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/01/25/TOF-dev-Software-Level/" title="TI-Tintin-OPT8241二次开发和应用系列--Software Level">
+                        <span class="hidden-mobile">TI-Tintin-OPT8241二次开发和应用系列--Software Level</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>

@@ -1,0 +1,745 @@
+
+
+<!DOCTYPE html>
+<html lang="en" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="pans0ul">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="TI-Tintin-OPT8241二次开发和应用系列–Software Level1.了解 VOXEL SDK 软件工程框架详情参考：https:&#x2F;&#x2F;github.com&#x2F;3dtof&#x2F;voxelsdk&#x2F;wiki&#x2F;Voxel-SDK-Architecture 主要的三个模块 Voxel Libraries 主要作用是，一个处理对不同的深度相机系统获取的深度数据的上位机程序（有点拗口）包括数据交换、下">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TI-Tintin-OPT8241二次开发和应用系列--Software Level">
+<meta property="og:url" content="https://pans0ul.github.io/2019/01/25/TOF-dev-Software-Level/index.html">
+<meta property="og:site_name" content="pans0ul blog">
+<meta property="og:description" content="TI-Tintin-OPT8241二次开发和应用系列–Software Level1.了解 VOXEL SDK 软件工程框架详情参考：https:&#x2F;&#x2F;github.com&#x2F;3dtof&#x2F;voxelsdk&#x2F;wiki&#x2F;Voxel-SDK-Architecture 主要的三个模块 Voxel Libraries 主要作用是，一个处理对不同的深度相机系统获取的深度数据的上位机程序（有点拗口）包括数据交换、下">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-1.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-2.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-3.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-4.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-5.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-6.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-7.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-8.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-9.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-10.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-11.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-12.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-13.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-14.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-15-coke.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-15.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-16.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-17.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-18.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-19.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-20.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-21.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-22.png">
+<meta property="og:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-23.png">
+<meta property="article:published_time" content="2019-01-25T11:37:18.000Z">
+<meta property="article:modified_time" content="2024-03-09T08:57:41.661Z">
+<meta property="article:author" content="pans0ul">
+<meta property="article:tag" content="CV">
+<meta property="article:tag" content="TOF">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pans0ul.github.io/img/TOF-dev-Software-Level/sl-1.png">
+  
+  
+  
+  <title>TI-Tintin-OPT8241二次开发和应用系列--Software Level - pans0ul blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"pans0ul.github.io","root":"/","version":"1.9.2","typing":{"enable":false,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"left","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 80vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>pans0ul&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                Home
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                Archives
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                Categories
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                Tags
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" target="_blank" rel="noopener" href="https://my.oschina.net/pansoul">
+                <i class="iconfont icon-pen"></i>
+                OSChina
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle">TI-Tintin-OPT8241二次开发和应用系列--Software Level</span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2019-01-25 19:37" pubdate>
+          January 25, 2019 pm
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="padding-left: 2rem; margin-right: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;Table of Contents</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">TI-Tintin-OPT8241二次开发和应用系列--Software Level</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="TI-Tintin-OPT8241二次开发和应用系列–Software-Level"><a href="#TI-Tintin-OPT8241二次开发和应用系列–Software-Level" class="headerlink" title="TI-Tintin-OPT8241二次开发和应用系列–Software Level"></a>TI-Tintin-OPT8241二次开发和应用系列–Software Level</h1><h2 id="1-了解-VOXEL-SDK-软件工程框架"><a href="#1-了解-VOXEL-SDK-软件工程框架" class="headerlink" title="1.了解 VOXEL SDK 软件工程框架"></a>1.了解 VOXEL SDK 软件工程框架</h2><p>详情参考：<a target="_blank" rel="noopener" href="https://github.com/3dtof/voxelsdk/wiki/Voxel-SDK-Architecture">https://github.com/3dtof/voxelsdk/wiki/Voxel-SDK-Architecture</a></p>
+<h3 id="主要的三个模块"><a href="#主要的三个模块" class="headerlink" title="主要的三个模块"></a>主要的三个模块</h3><ol>
+<li><p>Voxel Libraries</p>
+<p>主要作用是，一个处理对不同的深度相机系统获取的深度数据的上位机程序（有点拗口）包括数据交换、下载和上传，深度数据处理与现实等等。简而言之，这部分就是处理深度数据的上位机程序。TI主要是对自己生产的不同深度相机开发板定制的一个软件库。例如tintinOPT8241,OPT8320、haddockCamera、CalculusCamera等等深度相机。</p>
+</li>
+<li><p>Configuration Files 主要作用是，文件中包含了深度相机系统的参数信息，深度相机链接上位机的时候，可以读取这个文件，让深度相机可以获取合适的参数配置。其中包括相机肚子的参数，相机共有的内参外参等标定系数等。</p>
+</li>
+<li><p>Firmware Files 主要作用是，Firmware（固件）是烧写在深度相机开发板芯片上的文件。就像智能手机，它有它自己的固件。固件类似于，将程序编写好之后下载到单片机上，而这里的程序就是固件，往往这部分功能是作为系统的驱动层。不过，非常遗憾的是，除了1，2部分，这部分TI他们是不开源的。</p>
+</li>
+</ol>
+<h3 id="了解-Voxel-Libraries-架构"><a href="#了解-Voxel-Libraries-架构" class="headerlink" title="了解 Voxel Libraries 架构"></a>了解 Voxel Libraries 架构</h3><p><img src="/../img/TOF-dev-Software-Level/sl-1.png" srcset="/img/loading.gif" lazyload></p>
+<p>如上图所示，Voxel Libraries 主要有两个库组成：Voxel library、TI3DToF library，<a target="_blank" rel="noopener" href="http://封装为libvoxel.so/">封装为libvoxel.so</a> on Linux； <a target="_blank" rel="noopener" href="http://libti3dtof.so/">libti3dtof.so</a> on Linux 。 他们各自都有自己的namespace, Voxel:: 与 Voxel::TI:: ,TI3DToF library 继承 Voxel library 。</p>
+<p>实线箭头表示继承关系；虚线箭头表示引用或者使用关系；虚框表示的是抽象类；实框表示的是实体类。抽象类只能被继承不能实体化，实体类可以继承也可以实体化。</p>
+<p>因为文章的目的侧重是做应用开发，所以关于Voxel Libraries介绍，我讲个大概。</p>
+<p>在Voxel library中，CameraSystem 是最主要的，许多其他类都要依赖他。主要作用是相机（不一定指深度相机）一些通用的参数配置。在这个基础上才会有DepthCamera类等一系列的深度相机设置。</p>
+<p>继承Voxel library的TI3DToF library更加有针对性，虽然可以看到这个TI3DToF library里的类都是抽象类，没有实体类，但是这部分都是作为TI一系列DepthCamera所用的抽象公共类，将来要被具体tintinDepthCamera-CDK实体类继承。</p>
+<p>关于Voxle Device Library 看到在这个Voxel Libraries构架图中，你会发现没有tintinDepthCamera-CDK的继承框图，这个图上没有画出它的继承关系。实际上，TintinCamera–OPT8241继承的是TOFtintinCamera与TOFCameraFactoryBase。</p>
+<h2 id="2-了解-amp-安装-VOXEL-SDK"><a href="#2-了解-amp-安装-VOXEL-SDK" class="headerlink" title="2.了解&amp;安装 VOXEL SDK"></a>2.了解&amp;安装 VOXEL SDK</h2><p>安装教程详见：<a target="_blank" rel="noopener" href="https://github.com/3dtof/voxelsdk/wiki#installation">https://github.com/3dtof/voxelsdk/wiki#installation</a> Linux or Windows ，建议选择linux - ubuntu 14.04 作为开发环境，因为后续一些应用只能在linux上展开。</p>
+<p>下载 SDK Open-Source 包含以下主要的文件夹</p>
+<ol>
+<li>Voxel - the Core Voxel-SDK library</li>
+<li>TI3DToF - For TI’s depth camera support</li>
+<li>VoxelPCL - For Voxel-PCL integration</li>
+<li>App - For VoxelCLI and other apps</li>
+<li>Test - For individual test programs</li>
+</ol>
+<p>文件夹的名称和关系基本与之前所介绍的Voxel Libraries对应。其他的，VoxelPCL这个整合了PCL的一个应用，主要用于PCL的三维点云显示。APP文件夹中主要包含两个应用程序，SimpleVoxelViewer and Voxel CLI 。SimpleVoxelViewer只是一个PCL显示；而Voxel CLI 即可以显示还可以做其他交互操作。</p>
+<p>关于Voxel CLI 详见：<a target="_blank" rel="noopener" href="https://github.com/3dtof/voxelsdk/wiki/Voxel-CLI">https://github.com/3dtof/voxelsdk/wiki/Voxel-CLI</a></p>
+<p>关于文件夹Test</p>
+<p>可能是做开发时、调试时，留下的单独测试程序，我运行测试过，但是没有链接成功过 :_( 。但基本不会影响我的后续应用开发。</p>
+<p>以下所openSource 中所有的Test子程序：</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-2.png" srcset="/img/loading.gif" lazyload></p>
+<h2 id="3-如何获取-depth-data"><a href="#3-如何获取-depth-data" class="headerlink" title="3.如何获取 depth data"></a>3.如何获取 depth data</h2><p>连接设备之后，以Voxel CLI方式，可以保存的数据有：</p>
+<ul>
+<li>RAW</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-3.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Phase</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-4.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Depth data</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-5.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Ambient</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-6.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Amplitude</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-7.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Flags</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-8.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>PointCloud</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-9.png" srcset="/img/loading.gif" lazyload></p>
+<ul>
+<li>Vxl</li>
+</ul>
+<p><img src="/../img/TOF-dev-Software-Level/sl-10.png" srcset="/img/loading.gif" lazyload></p>
+<p>以上数据类型，主要可以分成四类： 对应wiki中的pipeline 详见： <a target="_blank" rel="noopener" href="https://github.com/3dtof/voxelsdk/wiki/Voxel::DepthCamera">https://github.com/3dtof/voxelsdk/wiki/Voxel::DepthCamera</a></p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-11.png" srcset="/img/loading.gif" lazyload></p>
+<p>第一类 :Raw data</p>
+<ul>
+<li>RAW</li>
+<li>Phase</li>
+</ul>
+<p>这里的Raw data 不管是有没有处理过的(processed)都是Raw data</p>
+<p>第二类 ：depthFrame</p>
+<ul>
+<li>Depth data</li>
+<li>Ambient</li>
+<li>Amplitude</li>
+<li>Flags</li>
+</ul>
+<p>注意这里的depth data 不是depthFrame，一个 depthFrame 中包含以上4个数据类型信息。 depthFrame输出的数据格式已经向前在芯片资料中已经给出。</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-12.png" srcset="/img/loading.gif" lazyload></p>
+<p>第三类 ：PointCloudFrame</p>
+<ul>
+<li>PointCloud</li>
+</ul>
+<p>PointCloud点云数据，包含xyzi等3D数据信息，是由depthFrame通过像素坐标系转换世界坐标系得到的。</p>
+<p>第四类： 用户（TI）自定义类型</p>
+<ul>
+<li>Vxl</li>
+</ul>
+<p>这部分是TI自定义数据类型，一个vxl的数据格式文件，里面可能同时包含depthFrame和PointCloudFrame。用户可以通过更改open source 程序得到自己想要的数据格式。</p>
+<p>在open source 中的以下代码中可以更改</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-13.png" srcset="/img/loading.gif" lazyload></p>
+<p>使用Tintin深度相机做应用，比较多用到的数据类型是depthFrame和PointCloudFrame，所以深刻认识这两个数据类型是应用开发的基础。在之后的内容中，会进一步介绍depthFrame和PointCloudFrame。</p>
+<h2 id="4-Depth-data的认识与其应用"><a href="#4-Depth-data的认识与其应用" class="headerlink" title="4.Depth data的认识与其应用"></a>4.Depth data的认识与其应用</h2><p>先来看一下，下图对于depth与PointCloud的定义：</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-14.png" srcset="/img/loading.gif" lazyload></p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-15-coke.png" srcset="/img/loading.gif" lazyload></p>
+<p>右边是RGB采集的图像，左边是深度相机采集的深度图，亮度越亮表示距离越近，越暗的表示距离越远。 </p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-15.png" srcset="/img/loading.gif" lazyload></p>
+<p>另外，深度图还可以被渲染成不同的RGB24颜色，颜色越暖越近，颜色越冷越远。 depth 表示的是相机与物体之间的距离，图示：</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-16.png" srcset="/img/loading.gif" lazyload></p>
+<p>PointCloud 每个点包含xyz 信息，通常是由depth 数据得到，一个立体的图像是由无数多个点组成并呈现出来的。</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-17.png" srcset="/img/loading.gif" lazyload></p>
+<p>depthFrame 的数据格式，用文本打开使用CLI保存的Depth 数据，你会发现，四个字节之间会有一定规律，是符合芯片说明中的4-ByteMode。</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-18.png" srcset="/img/loading.gif" lazyload></p>
+<p>而且，在Open source 中也体现了，如图所示 ：</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-19.png" srcset="/img/loading.gif" lazyload></p>
+<p>所以说，<strong>每个DepthFrame其中包含了 amplitude 与 depth .</strong></p>
+<h3 id="RGB-Image-与-DepthFrame"><a href="#RGB-Image-与-DepthFrame" class="headerlink" title="RGB Image 与 DepthFrame"></a>RGB Image 与 DepthFrame</h3><p><strong>RGB与Depth data本质区别—-RGB 像素的值代表颜色，depth data像素的值代表深度</strong></p>
+<p>RGB图片每个像素都有他自己的坐标，在一个像素坐标系表示，坐标分别用u,v 表示。每一点（u,v）的值表示该点的颜色，范围在0-255（RGB888）。一张有depth data构成的图片也适用于像素坐标系中，深度相机采集到的图像的坐标也是分别用u,v 表示,只不过每一点的值是相机与物体的距离，可以用(u,v,d)表示。同理，RGB图像每一点可以用（u,v,color）表示。</p>
+<p>理解了RGB的数据格式，以及depth与RGB数据格式的区别之后，会发现他们的<strong>本质区别在于代表的含义不同</strong>。RGB与depth他们的数据都是相同的数字，只不过再通过一种规定的数据“格式”编码，并且用“工具”呈现出来罢了，其他两个是相同的，真正的不同在于代表的含义。可以用示意图表示：</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-20.png" srcset="/img/loading.gif" lazyload></p>
+<p>（当时，我发现这点的时候，我想到了一个哲学范畴，每个人身上都具备相同“工具”——眼、耳、口、鼻、四肢等，但真正不同的是人的“数据含义”——思想，因为真正的思想不同，当用“工具”呈现时将是完全不同的意义，如果思想越先进，那么这个意义就越举足轻重。）</p>
+<p><strong>如何应用depth data做图像处理？</strong></p>
+<p>由于深度图像的(u,v,d)每个像素点表示物体与相机的距离，这里的d是一个float类型，打印输出的值就是距离，如下图所示：（某一点被检测物体的距离为：3.27979）。</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-21.png" srcset="/img/loading.gif" lazyload></p>
+<p>因为深度图像上每一点上得到的信息是距离，所以在算法上我们可以将保留设置的距离范围内，滤除不必要的距离的物体。<strong>所以，处理深度图像相比RGB图像最大的优势在于，能够得到非常清晰的前后景分离的图像。</strong></p>
+<h3 id="深度图像的算法处理"><a href="#深度图像的算法处理" class="headerlink" title="深度图像的算法处理"></a>深度图像的算法处理</h3><p>对于深度图像的算法处理，通常做法是： 1.前后景分离 2.转换成黑白图像 3.形态学处理 4.形状、形态分析 5.物体识别或跟踪</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-22.png" srcset="/img/loading.gif" lazyload></p>
+<p>这里针对GITHUB上TI提供的“Demo-application–handTracking”程序作分析。</p>
+<h4 id="S1：前后景分离"><a href="#S1：前后景分离" class="headerlink" title="S1：前后景分离"></a>S1：前后景分离</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs cpp"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">Jive::update</span><span class="hljs-params">(DepthFrame *frm)</span></span><br><span class="hljs-function"></span>&#123;<br>   DepthFrame hand;<br>   vector&lt; vector&lt;cv::Point&gt; &gt; contours;<br>   vector&lt;Vec4i&gt; hierarchy;<br>   <span class="hljs-function">RNG <span class="hljs-title">rng</span><span class="hljs-params">(<span class="hljs-number">12345</span>)</span></span>;   <br>   Mat gray;<br><br>   <span class="hljs-comment">// Create silhouette</span><br>   <span class="hljs-built_in">clipBackground</span>(*frm, hand);<br><br></code></pre></td></tr></table></figure>
+
+<p>分析：DepthFrame *frm作为clipBackground()的传入参数，得到深度数据帧。函数功能是分离背景，如何分离背景？再看：</p>
+<p><img src="/../img/TOF-dev-Software-Level/sl-23.png" srcset="/img/loading.gif" lazyload></p>
+<p>关键在于这里for循环，这个函数有两个输出参数，但是第二个当做输出。在这个循环中，遍历深度数据帧frm（一个深度数据帧包括depth&amp;amplitude，所以这里写in.amplitude.sieze()也可以），条件是：如果frm中像素深度值小于depthClip(是一个阈值，可以设置为1.2等，ampClip同理，范围在0-1)并且amplitude大于阈值，那么保留该点的深度值，并且push到新创建的DepthFrame hand的depth数据中，否则该点设置为0；下一个语句条件是：符合条件的，push到DepthFrame hand的amplitude数据中为1,否则该点的amplitude设置为0；</p>
+<h4 id="S2：转化成黑白图像，深度数据可视化"><a href="#S2：转化成黑白图像，深度数据可视化" class="headerlink" title="S2：转化成黑白图像，深度数据可视化"></a>S2：转化成黑白图像，深度数据可视化</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">_binaryMat = <span class="hljs-built_in">Mat</span>(hand.size.height, hand.size.width, CV_32FC1, hand.amplitude.<span class="hljs-built_in">data</span>());  <br>_binaryMat.<span class="hljs-built_in">convertTo</span>(gray, CV_8U, <span class="hljs-number">255.0</span>);<span class="hljs-comment">//amplitude date 0~1</span><br><span class="hljs-built_in">threshold</span>(gray, gray, <span class="hljs-number">200</span>, <span class="hljs-number">255</span>, THRESH_BINARY);<span class="hljs-comment">//to binary</span><br><br></code></pre></td></tr></table></figure>
+
+<p>分析：分离前后景之后，就可以通过OpenCV库创建一个Mat矩阵操作与显示（这里创建的Mat以hand中的amplituede的数据，也可以用depth，可以写为hand.depth.data()）；如果后面加上 imshow(“Binary”, _binaryMat);imshow(“Contours”, drawing); 显示的就是非常分离清晰的前后景图像；相比RGB相机通过帧差法分离前后景效果要好很多的。</p>
+<h4 id="S3：形态学处理，形状分析，物体跟踪等应用"><a href="#S3：形态学处理，形状分析，物体跟踪等应用" class="headerlink" title="S3：形态学处理，形状分析，物体跟踪等应用"></a>S3：形态学处理，形状分析，物体跟踪等应用</h4><p>程序中的处理方式如下，自行分析：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs cpp"> <span class="hljs-built_in">findContours</span>(gray, contours, hierarchy, CV_RETR_TREE, CV_CHAIN_APPROX_SIMPLE, cv::<span class="hljs-built_in">Point</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>));<br>   Mat drawing = Mat::<span class="hljs-built_in">zeros</span>( gray.<span class="hljs-built_in">size</span>(), CV_8UC3 );<br><br>   <span class="hljs-type">int</span> hands = <span class="hljs-number">0</span>;<br>   <span class="hljs-keyword">if</span> (contours.<span class="hljs-built_in">size</span>() &gt; <span class="hljs-number">0</span>) &#123;<br><br>      vector&lt;<span class="hljs-type">int</span>&gt; hull, rhull;<br>      vector&lt;<span class="hljs-type">int</span>&gt; defect;<br>      vector&lt;<span class="hljs-type">int</span>&gt; tips;<br>      cv::Point center = cv::<span class="hljs-built_in">Point</span>(<span class="hljs-number">0</span>,<span class="hljs-number">0</span>);<br>      <span class="hljs-type">float</span> radius = <span class="hljs-number">0</span>;<br><br>      <span class="hljs-keyword">for</span>( <span class="hljs-type">int</span> i = <span class="hljs-number">0</span>; i &lt; contours.<span class="hljs-built_in">size</span>(); i++ ) &#123;  <br>         <span class="hljs-keyword">if</span> (<span class="hljs-built_in">contourArea</span>(contours[i]) &gt; <span class="hljs-built_in">adjPix</span>(<span class="hljs-number">1000</span>)) &#123;<br>            hands++;<br>            <span class="hljs-built_in">findPalmCenter</span>(contours[i], center, radius);<br>            <span class="hljs-type">float</span> palm_depth = <span class="hljs-built_in">depthAt</span>(*frm, center);<br>            cv::<span class="hljs-built_in">circle</span>(drawing, center, (<span class="hljs-type">int</span>)radius, <span class="hljs-built_in">Scalar</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>), <span class="hljs-number">1</span>);<br><br>            <span class="hljs-built_in">findKeyPoints</span>(contours[i], hull, defect, <span class="hljs-built_in">adjPix</span>(<span class="hljs-number">15</span>));<br>            <span class="hljs-built_in">distillHullPoints</span>(contours[i], hull, rhull, <span class="hljs-built_in">adjPix</span>(<span class="hljs-number">10</span>));<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>; k &lt; rhull.<span class="hljs-built_in">size</span>(); k++) &#123;<br>               <span class="hljs-keyword">if</span> (k &gt; <span class="hljs-number">0</span>)<br>                  cv::<span class="hljs-built_in">line</span>(drawing, contours[i][rhull[k<span class="hljs-number">-1</span>]], contours[i][rhull[k]], <span class="hljs-built_in">Scalar</span>(<span class="hljs-number">255</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>), <span class="hljs-number">1</span>);<br>            &#125;<br><span class="hljs-meta">#<span class="hljs-keyword">if</span> 1</span><br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>; k &lt; defect.<span class="hljs-built_in">size</span>(); k++) <br>               cv::<span class="hljs-built_in">circle</span>(drawing, contours[i][defect[k]], <span class="hljs-built_in">adjPix</span>(<span class="hljs-number">3</span>), <span class="hljs-built_in">Scalar</span>(<span class="hljs-number">255</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>), <span class="hljs-number">-1</span>);<br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br>            vector&lt;<span class="hljs-type">int</span>&gt; temp;<br>            vector&lt;cv::Point&gt; tips;<br>            <span class="hljs-built_in">kCurvature</span>(contours[i], rhull, <span class="hljs-built_in">adjPix</span>(<span class="hljs-number">5</span>), <span class="hljs-built_in">adjPix</span>(<span class="hljs-number">25</span>), <span class="hljs-number">60.0</span>, temp);<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>; k &lt; temp.<span class="hljs-built_in">size</span>(); k++) &#123;<br>          <span class="hljs-comment">//     if (depthAt(*frm, contours[i][temp[k]]) &lt; palm_depth) </span><br>                  tips.<span class="hljs-built_in">push_back</span>(contours[i][temp[k]]);<br>            &#125;<br>            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> k=<span class="hljs-number">0</span>; k &lt; tips.<span class="hljs-built_in">size</span>(); k++) &#123;<br>               cv::<span class="hljs-built_in">circle</span>(drawing, tips[k], <span class="hljs-built_in">adjPix</span>(<span class="hljs-number">4</span>), <span class="hljs-built_in">Scalar</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">255</span>), <span class="hljs-number">-1</span>);<br>            &#125;<br><br></code></pre></td></tr></table></figure>
+
+<p>在得到物体清晰的轮廓之后，一些应用便非常容易展开，OpenCV拥有大量的应用处理例程可以付之于上。</p>
+<p>handTracking程序连接：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/3dtof/DemoApplications/tree/master/TinTin/hand_tracking">https://github.com/3dtof/DemoApplications/tree/master/TinTin/hand_tracking</a></p>
+<h3 id="关于了解depthFrame的Q-amp-A-refrence"><a href="#关于了解depthFrame的Q-amp-A-refrence" class="headerlink" title="关于了解depthFrame的Q&amp;A refrence"></a>关于了解depthFrame的Q&amp;A refrence</h3><ol>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/o_sun_o/article/details/8351037">https://blog.csdn.net/o_sun_o&#x2F;article&#x2F;details&#x2F;8351037</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/mouse8166/article/details/6195047">https://blog.csdn.net/mouse8166/article/details/6195047</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/leixiaohua1020/article/details/12682381">https://blog.csdn.net/leixiaohua1020/article/details/12682381</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.microsoft.com/en-us/sql/odbc/reference/develop-app/row-wise-binding?view=sql-server-2017">https://docs.microsoft.com/en-us/sql/odbc/reference/develop-app/row-wise-binding?view=sql-server-2017</a></li>
+<li><a target="_blank" rel="noopener" href="https://e2e.ti.com/support/sensors/f/1023/t/666615?tisearch=e2e-sitesearch&keymatch=OPT8241%20MATLAB">https://e2e.ti.com/support/sensors/f/1023/t/666615?tisearch=e2e-sitesearch&keymatch=OPT8241 MATLAB</a></li>
+<li><a target="_blank" rel="noopener" href="http://e2e.ti.com/support/sensors/f/1023/p/721965/2703526#2703526">http://e2e.ti.com/support/sensors/f/1023/p/721965/2703526#2703526</a></li>
+<li><a target="_blank" rel="noopener" href="http://e2e.ti.com/support/sensors/f/1023/t/730122?tisearch=e2e-sitesearch&keymatch=vxl">http://e2e.ti.com/support/sensors/f/1023/t/730122?tisearch=e2e-sitesearch&keymatch=vxl</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.ibm.com/support/knowledgecenter/en/SSEPEK_11.0.0/odbc/src/tpc/db2z_rowwisebind.html">https://www.ibm.com/support/knowledgecenter/en/SSEPEK_11.0.0&#x2F;odbc&#x2F;src&#x2F;tpc&#x2F;db2z_rowwisebind.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.codeproject.com/Tips/819613/Kinect-Version-Depth-Frame-to-mat-File-Exporter">https://www.codeproject.com/Tips/819613/Kinect-Version-Depth-Frame-to-mat-File-Exporter</a></li>
+<li><a target="_blank" rel="noopener" href="https://social.msdn.microsoft.com/Forums/en-US/4da8c75e-9aad-4dc3-bd83-d77ab4cd2f82/common-nui-problems-and-faq?forum=kinectsdk">https://social.msdn.microsoft.com/Forums/en-US/4da8c75e-9aad-4dc3-bd83-d77ab4cd2f82/common-nui-problems-and-faq?forum=kinectsdk</a></li>
+<li><a target="_blank" rel="noopener" href="https://social.msdn.microsoft.com/Forums/zh-TW/9aaa03b5-d2c1-46ed-80ad-b4d23882c136/depth-frame-data-format-and-ranges?forum=kinectsdk">https://social.msdn.microsoft.com/Forums/zh-TW/9aaa03b5-d2c1-46ed-80ad-b4d23882c136/depth-frame-data-format-and-ranges?forum=kinectsdk</a></li>
+</ol>
+<hr>
+<p>交流QQ： 365334601</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/CV/">#CV</a>
+      
+        <a href="/tags/TOF/">#TOF</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TI-Tintin-OPT8241二次开发和应用系列--Software Level</div>
+      <div>https://pans0ul.github.io/2019/01/25/TOF-dev-Software-Level/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>Author</div>
+          <div>pans0ul</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>Posted on</div>
+          <div>January 25, 2019</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>Licensed under</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - Attribution">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - Share-alike">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2019/01/26/TOF-theory-3-3/" title="TI-Tintin-OPT8241二次开发和应用系列--Theory Level(3/3)-参数理解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">TI-Tintin-OPT8241二次开发和应用系列--Theory Level(3/3)-参数理解</span>
+                        <span class="visible-mobile">Previous</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2019/01/13/TOF-dev-Hardware-Level/" title="TI-Tintin-OPT8241二次开发和应用系列--Hardware Level">
+                        <span class="hidden-mobile">TI-Tintin-OPT8241二次开发和应用系列--Hardware Level</span>
+                        <span class="visible-mobile">Next</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
+  </noscript>
+</body>
+</html>
